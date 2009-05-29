@@ -20,7 +20,7 @@ class Company(models.Model):
 	instant_messenger = GenericRelation('InstantMessenger')
 	web_site = GenericRelation('WebSite')
 	street_address = GenericRelation('StreetAddress')
-	note = GenericRelation(Comment)
+	note = GenericRelation(Comment, object_id_field='object_pk')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)

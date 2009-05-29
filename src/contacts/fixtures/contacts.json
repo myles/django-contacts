@@ -11,6 +11,17 @@
 		}
 	},
 	{
+		"pk": 2,
+		"model": "contacts.company",
+		"fields": {
+			"name": "Braithwaite Technology Consultants Inc.",
+			"slug": "btci",
+			"nickname": "BTCI",
+			"date_modified": "2009-05-29 00:34:06",
+			"date_added": "2009-05-29 00:34:06"
+		}
+	},
+	{
 		"pk": 1,
 		"model": "contacts.person",
 		"fields": {
@@ -21,6 +32,19 @@
 			"company": 1,
 			"date_modified": "2009-05-28 21:28:34",
 			"date_added": "2009-05-28 21:28:34"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "contacts.person",
+		"fields": {
+			"first_name": "Bruce",
+			"last_name": "Braithwaite",
+			"slug": "bruce-braithwaite",
+			"title": "President and CEO",
+			"company": 2,
+			"date_modified": "2009-05-29 00:56:06",
+			"date_added": "2009-05-29 00:56:06"
 		}
 	}
 ]
