@@ -1,0 +1,26 @@
+[
+	{
+		"pk": 1,
+		"model": "contacts.company",
+		"fields": {
+			"name": "Monkey in your Soul",
+			"slug": "miys",
+			"nickname": "MiyS",
+			"date_modified": "2009-05-28 21:28:05",
+			"date_added": "2009-05-28 21:28:05"
+		}
+	},
+	{
+		"pk": 1,
+		"model": "contacts.person",
+		"fields": {
+			"first_name": "Myles",
+			"last_name": "Braithwaite",
+			"slug": "myles-braithwaite",
+			"title": "President and CEO",
+			"company": 1,
+			"date_modified": "2009-05-28 21:28:34",
+			"date_added": "2009-05-28 21:28:34"
+		}
+	}
+]

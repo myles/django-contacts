@@ -1,0 +1,15 @@
+{% if object.email_address.all %}
+<div id="contant_emails">
+	<h3>Email Addresses</h3>
+	
+	<ul class="link_list">
+	{% for email in object.email_address.all %}
+		<li>
+			<a href="mailto:{{ email.email_address }}">{{ email.email_address }}</a>
+			<span class="alt">({{ email.get_location_display }})</span>
+		</li>
+	{% endfor %}
+	</ul>
+	
+</div>
+{% endif %}

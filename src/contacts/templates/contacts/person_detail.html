@@ -1,0 +1,30 @@
+{% extends "contacts/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ block.super }}: {{ object }}{% endblock %}
+
+{% block content_title %}
+	<h2>
+		{{ object }}
+		{% if object.nickname %}
+		<span class="alt">({{ object.nickname }})</span>
+		{% endif %}
+	</h2>
+	<p class="meta">
+		{% if object.title %}{{ object.title }} at {% endif %}
+		<a href="{{ object.company.get_absolute_url }}">
+			{{ object.company }}
+		</a>
+	</p>
+{% endblock %}
+
+{% block content %}
+	{{ object.about|linebreaks }}
+	
+	{% include "contacts/_phone_number_list.html" %}
+	{% include "contacts/_email_address_list.html" %}
+	{% include "contacts/_instant_messenger_list.html" %}
+	{% include "contacts/_street_address_list.html" %}
+	{% include "contacts/_web_site_list.html" %}
+	{% include "contacts/_comment_list.html" %}
+{% endblock %}

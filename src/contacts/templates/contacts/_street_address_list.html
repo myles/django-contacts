@@ -1,0 +1,16 @@
+{% if object.street_address.all %}
+<div id="contant_addresses">
+	<h3>Street Addresses</h3>
+	
+	<ul class="link_list">
+	{% for address in object.street_address.all %}
+		<li>
+			{{ address.street }}<br>
+			{{ address.city }}, {{ address.province }}<br>
+			{{ address.postal_code }} {{ address.country }}
+			<span class="alt">({{ address.get_location_display }})</span>
+		</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}

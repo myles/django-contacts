@@ -1,0 +1,14 @@
+{% if object.instant_messenger.all %}
+<div id="contant_ims">
+	<h3>Instant Messengers</h3>
+	
+	<ul class="link_list">
+	{% for im in object.instant_messenger.all %}
+		<li>
+			{{ im.im_account }}
+			<span class="alt">({{ im.get_service_display }} @ {{ im.get_location_display }})</span>
+		</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}

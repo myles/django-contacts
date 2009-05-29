@@ -1,0 +1,14 @@
+{% if object.phone_number.all %}
+<div id="contant_numbers">
+	<h3>Phone Numbers</h3>
+	
+	<ul class="link_list">
+	{% for phone in object.phone_number.all %}
+		<li>
+			{{ phone.phone_number }}
+			<span class="alt">({{ phone.get_location_display }})</span>
+		</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}

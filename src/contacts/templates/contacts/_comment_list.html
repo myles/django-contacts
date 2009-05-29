@@ -1,0 +1,27 @@
+<div id="contact_notes">
+	<form action="{% url comments-post-comment %}" method="post" accept-charset="utf-8">
+		<p><label for="id_comment">Comment</label><textarea name="id_comment" id="id_comment" rows="8" cols="40"></textarea></p>
+		<p><input type="submit" value="Add"></p>
+	</form>
+	
+	{% if object.note.all %}
+	<h3>Notes</h3>
+	
+	{% for note in object.note.all %}
+	<div id="note-{{ comment.id }}">
+		<h4>
+			{{ note.submit_date }}
+			<span class="alt">
+				{% if user.name %}
+				({{ note.user.name }})
+				{% else %}
+				({{ note.user.username }})
+				{% endif %}
+			</span>
+		</h4>
+		{% endfor %}
+
+		{{ note.comment|linebreaks }}
+	</div>
+	{% endif %}
+</div>
