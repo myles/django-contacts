@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.contenttypes import generic
+from django.contrib.comments.models import Comment
 
 from contacts.models import Company, Person, PhoneNumber, EmailAddress, InstantMessenger, WebSite, StreetAddress
 
@@ -18,6 +19,10 @@ class WebSiteInline(generic.GenericTabularInline):
 class StreetAddressInline(generic.GenericStackedInline):
 	model = StreetAddress
 
+class CommentInline(generic.GenericStackedInline):
+	model = Comment
+	ct_fk_field = 'object_pk'
+
 class CompanyAdmin(admin.ModelAdmin):
 	inlines = [
 		PhoneNumberInline,
@@ -25,6 +30,7 @@ class CompanyAdmin(admin.ModelAdmin):
 		InstantMessengerInline,
 		WebSiteInline,
 		StreetAddressInline,
+		CommentInline,
 	]
 	
 	list_display = ('name',)
@@ -38,6 +44,7 @@ class PersonAdmin(admin.ModelAdmin):
 		InstantMessengerInline,
 		WebSiteInline,
 		StreetAddressInline,
+		CommentInline,
 	]
 	
 	list_display_links = ('first_name', 'last_name',)
