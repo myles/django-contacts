@@ -1,0 +1,13 @@
+<fieldset id="instant_messengers">
+	<legend>Instant messengers</legend>
+	{{ im_formset.management_form }}
+	{% for form in im_formset.forms %}
+	<p>
+		{{ form.im_account }}
+		{{ form.service }}
+		{{ form.location }}
+		<label>{{ form.DELETE.label }}</label>
+		{{ form.DELETE }}
+	</p>
+	{% endfor %}
+</fieldset>

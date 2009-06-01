@@ -1,7 +1,7 @@
 {% extends "contacts/base.html" %}
 {% load i18n %}
 
-{% block title %}{{ block.super }}: {{ company }}{% endblock %}
+{% block title %}{{ block.super }}: {{ object }}{% endblock %}
 
 {% block content_title %}
 	<h2>
@@ -13,6 +13,11 @@
 {% endblock %}
 
 {% block content %}
+	<p>
+		<a href="{{ object.get_update_url }}">{% trans "Update" %}</a>
+		<a href="{{ object.get_delete_url }}">{% trans "Delete" %}</a>
+	</p>
+	
 	{{ object.about|linebreaks }}
 	
 	{% if object.person_set.all %}
@@ -22,7 +27,9 @@
 		{% for person in object.person_set.all %}
 			<li>
 				<a href="{{ person.get_absolute_url }}">{{ person }}</a>
-				<span class="alt">({{ person.title }})</span>
+				{% if person.title %}
+					<span class="alt">({{ person.title }})</span>
+				{% endif %}
 			</li>
 		{% endfor %}
 		</ul>

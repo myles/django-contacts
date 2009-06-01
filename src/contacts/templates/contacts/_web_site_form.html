@@ -1,0 +1,12 @@
+<fieldset id="web_sites">
+	<legend>Web sites</legend>
+	{{ website_formset.management_form }}
+	{% for form in website_formset.forms %}
+	<p>
+		{{ form.url }}
+		{{ form.location }}
+		<label>{{ form.DELETE.label }}</label>
+		{{ form.DELETE }}
+	</p>
+	{% endfor %}
+</fieldset>

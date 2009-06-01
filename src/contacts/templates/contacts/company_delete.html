@@ -1,0 +1,20 @@
+{% extends "contacts/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ block.super }}: Delete {{ company.name }}{% endblock %}
+
+{% block content_title %}
+	<h2>Delete {{ company.name }}</h2>
+{% endblock %}
+
+{% block content %}
+	<form action="." method="post" accept-charset="utf-8">
+		<p>
+			<select name="delete_company" id="delete_company" size="1">
+				<option value="No">No</option>
+				<option value="Yes">Yes</option>
+			</select>
+			<input type="submit" value="Submit">
+		</p>
+	</form>
+{% endblock %}

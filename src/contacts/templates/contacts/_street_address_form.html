@@ -1,0 +1,14 @@
+<fieldset id="street_addresses" class="">
+	<legend>Street addresses</legend>
+	{{ address_formset.management_form }}
+	{% for form in address_formset.forms %}
+	<p>
+		<label>{{ form.street.label }}</label>{{ form.street }} {{ form.location }}<br>
+		<label>{{ form.city.label }}</label>{{ form.city }}<br>
+		<label>{{ form.province.label }}</label>{{ form.province }} <label>{{ form.postal_code.label }}</label>{{ form.postal_code }}<br>
+		<label>{{ form.country.label }}</label>{{ form.country }}
+		<label>{{ form.DELETE.label }}</label>
+		{{ form.DELETE }}
+	</p>
+	{% endfor %}
+</fieldset>

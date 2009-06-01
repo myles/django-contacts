@@ -39,6 +39,18 @@ class Company(models.Model):
 		return ('contacts_company_detail', None, {
 			'slug': self.slug,
 		})
+	
+	@permalink
+	def get_update_url(self):
+		return ('contacts_company_update', None, {
+			'slug': self.slug,
+		})
+	
+	@permalink
+	def get_delete_url(self):
+		return ('contacts_company_delete', None, {
+			'slug': self.slug,
+		})
 
 class Person(models.Model):
 	"""Person model."""
@@ -82,6 +94,18 @@ class Person(models.Model):
 		return ('contacts_person_detail', None, {
 			'slug': self.slug,
 		})
+	
+	@permalink
+	def get_update_url(self):
+		return ('contacts_person_update', None, {
+			'slug': self.slug,
+		})
+	
+	@permalink
+	def get_delete_url(self):
+		return ('contacts_person_delete', None, {
+			'slug': self.slug,
+		})
 
 PHONE_LOCATION_CHOICIES = (
 	('work', 'Work'),
@@ -101,7 +125,7 @@ class PhoneNumber(models.Model):
 	
 	phone_number = models.CharField(_('number'), max_length=50)
 	location = models.CharField(_('location'), max_length=6,
-		choices=PHONE_LOCATION_CHOICIES)
+		choices=PHONE_LOCATION_CHOICIES, default='work')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
@@ -128,7 +152,7 @@ class EmailAddress(models.Model):
 	
 	email_address = models.EmailField(_('email address'))
 	location = models.CharField(_('location'), max_length=6,
-		choices=LOCATION_CHOICES)
+		choices=LOCATION_CHOICES, default='work')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
@@ -163,9 +187,9 @@ class InstantMessenger(models.Model):
 	
 	im_account = models.CharField(_('im account'), max_length=100)
 	location = models.CharField(_('location'), max_length=6,
-		choices=LOCATION_CHOICES)
+		choices=LOCATION_CHOICES, default='work')
 	service = models.CharField(_('service'), max_length=11,
-		choices=IM_SERVICE_CHOICES)
+		choices=IM_SERVICE_CHOICES, default='jabber')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
@@ -186,7 +210,7 @@ class WebSite(models.Model):
 
 	url = models.URLField(_('URL'))
 	location = models.CharField(_('location'), max_length=6,
-		choices=LOCATION_CHOICES)
+		choices=LOCATION_CHOICES, default='work')
 
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
@@ -196,8 +220,11 @@ class WebSite(models.Model):
 	
 	class Meta:
 		db_table = 'contacts_web_sites'
-		verbose_name = 'web site'
-		verbose_name_plural = 'web sites'
+		verbose_name = _('web site')
+		verbose_name_plural = _('web sites')
+	
+	def get_absolute_url(self):
+		return u"%s?web_site=%s" % (self.content_object.get_absolute_url(), self.pk)
 
 class StreetAddress(models.Model):
 	content_type = models.ForeignKey(ContentType,
@@ -213,7 +240,7 @@ class StreetAddress(models.Model):
 		null=True)
 	country = models.CharField(_('country'), max_length=100)
 	location = models.CharField(_('location'), max_length=6,
-		choices=LOCATION_CHOICES)
+		choices=LOCATION_CHOICES, default='work')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
@@ -223,5 +250,5 @@ class StreetAddress(models.Model):
 	
 	class Meta:
 		db_table = 'contacts_street_addresses'
-		verbose_name = 'street address'
-		verbose_name_plural = 'street addresses'
+		verbose_name = _('street address')
+		verbose_name_plural = _('street addresses')

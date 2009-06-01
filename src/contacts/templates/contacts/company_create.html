@@ -1,0 +1,20 @@
+{% extends "contacts/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ block.super }}: Create a new Company{% endblock %}
+
+{% block content_title %}
+	<h2>Create a new Company</h2>
+{% endblock %}
+
+{% block content %}
+	<form action="." method="post" accept-charset="utf-8">
+		{{ form.as_p }}
+		
+		{% for form in phone_formset.forms %}
+			{{ form.as_p }}
+		{% endfor %}
+		
+		<p><input type="submit" value="Create"></p>
+	</form>
+{% endblock %}

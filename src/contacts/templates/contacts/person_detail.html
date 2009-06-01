@@ -16,6 +16,11 @@
 			{{ object.company }}
 		</a>
 	</p>
+	
+	<p>
+		<a href="{{ object.get_update_url }}">{% trans "Update" %}</a>
+		<a href="{{ object.get_delete_url }}">{% trans "Delete" %}</a>
+	</p>
 {% endblock %}
 
 {% block content %}

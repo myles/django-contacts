@@ -1,0 +1,23 @@
+{% extends "contacts/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ block.super }}: Edit {{ person }}{% endblock %}
+
+{% block content_title %}
+	<h2>Edit {{ person }}</h2>
+{% endblock %}
+
+{% block content %}
+	<form action="." method="post" accept-charset="utf-8">
+		<p>{{ form.first_name }} {{ form.last_name }}</p>
+		<p>{{ form.title }} {{ form.company }}</p>
+		
+		{% include "contacts/_phone_number_form.html" %}
+		{% include "contacts/_email_address_form.html" %}
+		{% include "contacts/_instant_messenger_form.html" %}
+		{% include "contacts/_web_site_form.html" %}
+		{% include "contacts/_street_address_form.html" %}
+		
+		<p><input type="submit" value="Save"></p>
+	</form>
+{% endblock %}
