@@ -9,6 +9,10 @@ urlpatterns = patterns('contacts.views',
 		view = 'company_create',
 		name = 'contants_company_create',
 	),
+	url(r'^companies/(?P<slug>[-\w]+)/import_vcard/$',
+		view = 'company_import_people_vcard',
+		name = 'contants_company_import_people_vcard'
+	),
 	url(r'^companies/(?P<slug>[-\w]+)/delete/$',
 		view = 'company_delete',
 		name = 'contacts_company_delete'
