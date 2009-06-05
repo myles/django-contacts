@@ -9,7 +9,7 @@ from contacts.utils import importer
 from contacts.models import Company, Person
 from contacts.forms import *
 
-def company_list(request, page=1, template_name='contacts/company_list.html'):
+def company_list(request, page=1, template_name='contacts/company/list.html'):
 	"""List of all the comapnies.
 	
 	:param template_name: Add a custom template.
@@ -36,7 +36,7 @@ def company_list(request, page=1, template_name='contacts/company_list.html'):
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
-def company_detail(request, slug, template_name='contacts/company_detail.html'):
+def company_detail(request, slug, template_name='contacts/company/detail.html'):
 	"""Detail of a company.
 
 	:param template_name: Add a custom template.
@@ -54,7 +54,7 @@ def company_detail(request, slug, template_name='contacts/company_detail.html'):
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
-def company_create(request, template_name='contacts/company_create.html'):
+def company_create(request, template_name='contacts/company/create.html'):
 	"""Create a company.
 	
 	:param template_name: A custom template.
@@ -88,7 +88,7 @@ def company_create(request, template_name='contacts/company_create.html'):
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
-def company_update(request, slug, template_name='contacts/company_update.html'):
+def company_update(request, slug, template_name='contacts/company/update.html'):
 	"""Update a company.
 	
 	:param template_name: A custom template.
@@ -139,13 +139,13 @@ def company_update(request, slug, template_name='contacts/company_update.html'):
 		'im_formset': im_formset,
 		'website_formset': website_formset,
 		'address_formset': address_formset,
-		'company': company,
+		'object': company,
 	}
 	
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
-def company_delete(request, slug, template_name='contacts/company_delete.html'):
+def company_delete(request, slug, template_name='contacts/company/delete.html'):
 	"""Update a company.
 	
 	:param template_name: A custom template.
@@ -169,14 +169,14 @@ def company_delete(request, slug, template_name='contacts/company_delete.html'):
 			return HttpResponseRedirect(company.get_absolute_url())
 	
 	context = {
-		'company': company,
+		'object': company,
 	}
 	
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
 def company_import_people_vcard(request, slug,
-	template_name='contacts/import_vcard.html'):
+	template_name='contacts/import/vcard.html'):
 	"""Import people into a company vCards.
 
 	:param template_name: A custom template.
@@ -212,7 +212,7 @@ def company_import_people_vcard(request, slug,
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
-def person_list(request, page=1, template_name='contacts/person_list.html'):
+def person_list(request, page=1, template_name='contacts/person/list.html'):
 	"""List of all the people.
 	
 	:param template_name: Add a custom template.
@@ -240,7 +240,7 @@ def person_list(request, page=1, template_name='contacts/person_list.html'):
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
-def person_detail(request, slug, template_name='contacts/person_detail.html'):
+def person_detail(request, slug, template_name='contacts/person/detail.html'):
 	"""Detail of a person.
 	
 	:param template_name: Add a custom template.
@@ -258,7 +258,7 @@ def person_detail(request, slug, template_name='contacts/person_detail.html'):
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
-def person_create(request, template_name='contacts/person_create.html'):
+def person_create(request, template_name='contacts/person/create.html'):
 	"""Create a person.
 	
 	:param template_name: A custom template.
@@ -285,7 +285,7 @@ def person_create(request, template_name='contacts/person_create.html'):
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
-def person_update(request, slug, template_name='contacts/person_update.html'):
+def person_update(request, slug, template_name='contacts/person/update.html'):
 	"""Update a person.
 
 	:param template_name: A custom template.
@@ -335,13 +335,13 @@ def person_update(request, slug, template_name='contacts/person_update.html'):
 		'im_formset': im_formset,
 		'website_formset': website_formset,
 		'address_formset': address_formset,
-		'person': person,
+		'object': person,
 	}
 
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
-def person_delete(request, slug, template_name='contacts/person_delete.html'):
+def person_delete(request, slug, template_name='contacts/person/delete.html'):
 	"""Delete a company.
 
 	:param template_name: A custom template.
@@ -365,7 +365,7 @@ def person_delete(request, slug, template_name='contacts/person_delete.html'):
 			return HttpResponseRedirect(person.get_absolute_url())
 
 	context = {
-		'person': person,
+		'object': person,
 	}
 
 	return render_to_response(template_name, context,

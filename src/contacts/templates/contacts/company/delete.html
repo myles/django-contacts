@@ -1,16 +1,16 @@
 {% extends "contacts/base.html" %}
 {% load i18n %}
 
-{% block title %}{{ block.super }}: Delete {{ person }}{% endblock %}
+{% block title %}{{ block.super }}: Delete {{ object.name }}{% endblock %}
 
 {% block content_title %}
-	<h2>Delete {{ person }}</h2>
+	<h2>Delete {{ object.name }}</h2>
 {% endblock %}
 
 {% block content %}
 	<form action="." method="post" accept-charset="utf-8">
 		<p>
-			<select name="delete_person" id="delete_company" size="1">
+			<select name="delete_company" id="delete_company" size="1">
 				<option value="No">No</option>
 				<option value="Yes">Yes</option>
 			</select>

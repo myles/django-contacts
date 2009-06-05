@@ -11,13 +11,13 @@ class ContactsTest(TestCase):
 	
 	def setUp(self):
 		email = self.company_miys.email_address.create()
-		email.email_address = '(416) 555-8888'
+		email.email_address = 'info@monkeyinyoursoul.com'
 		email.location = 'work'
 		email.save()
 	
 	def testEmailAddressThoughCompany(self):
 		email = self.company_miys.email_address.get()
-		self.failUnlessEqual(email.email_address, '(416) 555-8888')
+		self.failUnlessEqual(email.email_address, 'info@monkeyinyoursoul.com')
 	
 	def testViewCompanyList(self):
 		response = self.client.get('/contacts/companies/')
