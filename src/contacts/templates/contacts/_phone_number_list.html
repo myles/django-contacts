@@ -4,9 +4,9 @@
 	
 	<ul class="link_list">
 	{% for phone in object.phone_number.all %}
-		<li>
-			{{ phone.phone_number }}
-			<span class="alt">({{ phone.get_location_display }})</span>
+		<li class="tel">
+			<span class="value">{{ phone.phone_number }}</span>
+			<span class="alt">(<span class="type">{{ phone.get_location_display }}</span>)</span>
 		</li>
 	{% endfor %}
 	</ul>

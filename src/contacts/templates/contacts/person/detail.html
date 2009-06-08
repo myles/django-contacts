@@ -5,14 +5,14 @@
 
 {% block content_title %}
 	<h2>
-		{{ object }}
+		<span class="fn">{{ object }}</span>
 		{% if object.nickname %}
-		<span class="alt">({{ object.nickname }})</span>
+		<span class="alt">(<span class="nickname">{{ object.nickname }}</span>)</span>
 		{% endif %}
 	</h2>
-	<p class="meta">
-		{% if object.title %}{{ object.title }} at {% endif %}
-		<a href="{{ object.company.get_absolute_url }}">
+	<p class="meta org">
+		{% if object.title %}<span class="title">{{ object.title }}</span> at {% endif %}
+		<a href="{{ object.company.get_absolute_url }}" class="organization-name">
 			{{ object.company }}
 		</a>
 	</p>

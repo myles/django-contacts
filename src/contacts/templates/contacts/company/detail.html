@@ -5,9 +5,9 @@
 
 {% block content_title %}
 	<h2>
-		{{ object }}
+		<span class="fn">{{ object }}</span>
 		{% if object.nickname %}
-		<span class="alt">({{ object.nickname }})</span>
+		<span class="alt">(<span class="nickname">{{ object.nickname }}</span>)</span>
 		{% endif %}
 	</h2>
 {% endblock %}

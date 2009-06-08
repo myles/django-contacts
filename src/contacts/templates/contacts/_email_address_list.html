@@ -4,9 +4,9 @@
 	
 	<ul class="link_list">
 	{% for email in object.email_address.all %}
-		<li>
-			<a href="mailto:{{ email.email_address }}">{{ email.email_address }}</a>
-			<span class="alt">({{ email.get_location_display }})</span>
+		<li class="email">
+			<a href="mailto:{{ email.email_address }}" class="value">{{ email.email_address }}</a>
+			<span class="alt">(<span class="type">{{ email.get_location_display }}</span>)</span>
 		</li>
 	{% endfor %}
 	</ul>
