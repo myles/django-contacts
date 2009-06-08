@@ -28,6 +28,3 @@ EmailAddressFormSet = inlineformset_factory(EmailAddress, extra=1)
 InstantMessengerFormSet = inlineformset_factory(InstantMessenger, extra=1)
 WebSiteFormSet = inlineformset_factory(WebSite, extra=1)
 StreetAddressFormSet = inlineformset_factory(StreetAddress, extra=1)
-
-class VCardUploadForm(forms.Form):
-	vcard = forms.FileField()

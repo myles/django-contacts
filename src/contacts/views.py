@@ -5,7 +5,6 @@ from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
 
-from contacts.utils import importer
 from contacts.models import Company, Person
 from contacts.forms import *
 
@@ -172,43 +171,6 @@ def company_delete(request, slug, template_name='contacts/company/delete.html'):
 		'object': company,
 	}
 	
-	return render_to_response(template_name, context,
-		context_instance=RequestContext(request))
-
-def company_import_people_vcard(request, slug,
-	template_name='contacts/import/vcard.html'):
-	"""Import people into a company vCards.
-
-	:param template_name: A custom template.
-	"""
-
-	user = request.user
-	if not user.has_perm('add_person') and not user.has_perm('change_person'):
-		return HttpResponseForbidden()
-	
-	try:
-		company = Company.objects.get(slug__iexact=slug)
-	except Company.DoesNotExist:
-		raise Http404
-	
-	context = {}
-	
-	if request.method == 'POST':
-		form = VCardUploadForm(request.POST, request.FILES)
-		if form.is_valid():
-			vcard = request.FILES['vcard'].read()
-			imported, updated = importer.vcard(vcard, company)
-
-			context['imported'] = imported
-			context['updated'] = updated
-			context['form'] = form
-		else:
-			context['error'] = True
-	else:
-		form = VCardUploadForm()
-
-	context['form'] = form
-
 	return render_to_response(template_name, context,
 		context_instance=RequestContext(request))
 
