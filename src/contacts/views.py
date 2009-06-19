@@ -103,10 +103,17 @@ def company_update(request, slug, template_name='contacts/company/update.html'):
 	except Company.DoesNotExist:
 		raise Http404
 	
+	form = CompanyUpdateForm(instance=company)
+	phone_formset = PhoneNumberFormSet(instance=company)
+	email_formset = EmailAddressFormSet(instance=company)
+	im_formset = InstantMessengerFormSet(instance=company)
+	website_formset = WebSiteFormSet(instance=company)
+	address_formset = StreetAddressFormSet(instance=company)
+
 	if request.method == 'POST':
 		form = CompanyUpdateForm(request.POST, instance=company)
 		phone_formset = PhoneNumberFormSet(request.POST, instance=company)
-		email_formset = EmailAddressFormSet(request,POST, instance=company)
+		email_formset = EmailAddressFormSet(request.POST, instance=company)
 		im_formset = InstantMessengerFormSet(request.POST, instance=company)
 		website_formset = WebSiteFormSet(request.POST, instance=company)
 		address_formset = StreetAddressFormSet(request.POST, instance=company)
@@ -121,15 +128,6 @@ def company_update(request, slug, template_name='contacts/company/update.html'):
 			website_formset.save()
 			address_formset.save()
 			return HttpResponseRedirect(company.get_absolute_url())
-		else:
-			return HttpResponseServerError
-	
-	form = CompanyUpdateForm(instance=company)
-	phone_formset = PhoneNumberFormSet(instance=company)
-	email_formset = EmailAddressFormSet(instance=company)
-	im_formset = InstantMessengerFormSet(instance=company)
-	website_formset = WebSiteFormSet(instance=company)
-	address_formset = StreetAddressFormSet(instance=company)
 	
 	context = {
 		'form': form,

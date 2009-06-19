@@ -8,5 +8,5 @@ urlpatterns = patterns('',
 	url(r'^admin/(.*)', admin.site.root),
 	url(r'^comments/', include('django.contrib.comments.urls')),
 	
-	url(r'^contacts/', include('contacts.urls')),
+	url(r'^', include('contacts.urls')),
 )
