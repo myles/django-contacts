@@ -3,13 +3,12 @@ from django.test import TestCase
 from contacts.models import Company, Person
 
 class ContactsTest(TestCase):
-	fixtures = ['contacts',]
+	fixtures = ['contacts.json',]
 	urls = 'contacts.testurls'
 	
-	company_miys = Company.objects.get(pk=1)
-	person_mb = Person.objects.get(pk=1)
-	
 	def setUp(self):
+		self.company_miys = Company.objects.get(pk=1)
+		self.person_mb = Person.objects.get(pk=1)
 		email = self.company_miys.email_address.create()
 		email.email_address = 'info@monkeyinyoursoul.com'
 		email.location = 'work'
