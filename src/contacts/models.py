@@ -166,15 +166,15 @@ class EmailAddress(models.Model):
 		verbose_name_plural = 'email addresses'
 
 IM_SERVICE_CHOICES = (
-	('aim', _('AIM')),
-	('msn', _('MSN')),
-	('icq', _('ICQ')),
-	('jabber', _('Jabber')),
-	('yahoo', _('Yahoo')),
-	('skype', _('Skype')),
-	('qq', _('QQ')),
-	('sametime', _('Sametime')),
-	('gadu-gadu', _('Gadu-Gadu')),
+	('aim', 'AIM'),
+	('msn', 'MSN'),
+	('icq', 'ICQ'),
+	('jabber', 'Jabber'),
+	('yahoo', 'Yahoo'),
+	('skype', 'Skype'),
+	('qq', 'QQ'),
+	('sametime', 'Sametime'),
+	('gadu-gadu', 'Gadu-Gadu'),
 	('google-talk', 'Google Talk'),
 	('other', _('Other'))
 )
