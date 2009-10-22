@@ -108,12 +108,12 @@ class Person(models.Model):
 		})
 
 PHONE_LOCATION_CHOICIES = (
-	('work', 'Work'),
-	('mobile', 'Mobile'),
-	('fax', 'Fax'),
-	('pager', 'Pager'),
-	('home', 'Home'),
-	('other', 'Other'),
+	('work', _('Work')),
+	('mobile', _('Mobile')),
+	('fax', _('Fax')),
+	('pager', _('Pager')),
+	('home', _('Home')),
+	('other', _('Other')),
 )
 
 class PhoneNumber(models.Model):
@@ -139,9 +139,9 @@ class PhoneNumber(models.Model):
 		verbose_name_plural = 'phone numbers'
 
 LOCATION_CHOICES = (
-	('work', 'Work'),
-	('person', 'Personal'),
-	('other', 'Other')
+	('work', _('Work')),
+	('person', _('Personal')),
+	('other', _('Other'))
 )
 
 class EmailAddress(models.Model):
@@ -166,17 +166,17 @@ class EmailAddress(models.Model):
 		verbose_name_plural = 'email addresses'
 
 IM_SERVICE_CHOICES = (
-	('aim', 'AIM'),
-	('msn', 'MSN'),
-	('icq', 'ICQ'),
-	('jabber', 'Jabber'),
-	('yahoo', 'Yahoo'),
-	('skype', 'Skype'),
-	('qq', 'QQ'),
-	('sametime', 'Sametime'),
-	('gadu-gadu', 'Gadu-Gadu'),
+	('aim', _('AIM')),
+	('msn', _('MSN')),
+	('icq', _('ICQ')),
+	('jabber', _('Jabber')),
+	('yahoo', _('Yahoo')),
+	('skype', _('Skype')),
+	('qq', _('QQ')),
+	('sametime', _('Sametime')),
+	('gadu-gadu', _('Gadu-Gadu')),
 	('google-talk', 'Google Talk'),
-	('other', 'Other')
+	('other', _('Other'))
 )
 
 class InstantMessenger(models.Model):
