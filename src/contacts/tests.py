@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from django.core.urlresolvers import reverse
 from contacts.models import Company, Person
 
 class ContactsTest(TestCase):
@@ -19,7 +20,7 @@ class ContactsTest(TestCase):
 		self.failUnlessEqual(email.email_address, 'info@monkeyinyoursoul.com')
 	
 	def testViewCompanyList(self):
-		response = self.client.get('/contacts/companies/')
+		response = self.client.get(reverse('contacts_company_list'))
 		self.failUnlessEqual(response.status_code, 200)
 	
 	def testViewCompanyDetail(self):
@@ -27,7 +28,7 @@ class ContactsTest(TestCase):
 		self.failUnlessEqual(response.status_code, 200)
 	
 	def testViewPersonList(self):
-		response = self.client.get('/contacts/people/')
+		response = self.client.get(reverse('contacts_person_list'))
 		self.failUnlessEqual(response.status_code, 200)
 	
 	def testViewPersonDetail(self):
