@@ -1,5 +1,7 @@
+{% load i18n %}
+
 <fieldset id="web_sites">
-	<legend>Web sites</legend>
+	<legend>{% trans "Web sites" %}</legend>
 	{{ website_formset.management_form }}
 	{% for form in website_formset.forms %}
 	<p>

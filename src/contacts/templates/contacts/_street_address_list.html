@@ -1,6 +1,8 @@
+{% load i18n %}
+
 {% if object.street_address.all %}
 <div id="contant_addresses">
-	<h3>Street Addresses</h3>
+	<h3>{% trans "Street Addresses" %}</h3>
 	
 	<ul class="link_list">
 	{% for address in object.street_address.all %}

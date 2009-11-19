@@ -1,6 +1,8 @@
+{% load i18n %}
+
 {% if object.email_address.all %}
 <div id="contant_emails">
-	<h3>Email Addresses</h3>
+	<h3>{% trans "Email Addresses" %}</h3>
 	
 	<ul class="link_list">
 	{% for email in object.email_address.all %}

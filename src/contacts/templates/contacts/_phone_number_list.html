@@ -1,6 +1,8 @@
+{% load i18n %}
+
 {% if object.phone_number.all %}
 <div id="contant_numbers">
-	<h3>Phone Numbers</h3>
+	<h3>{% trans "Phone Numbers" %}</h3>
 	
 	<ul class="link_list">
 	{% for phone in object.phone_number.all %}

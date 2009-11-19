@@ -1,5 +1,7 @@
+{% load i18n %}
+
 <fieldset id="phone_numbers">
-	<legend>Phone numbers</legend>
+	<legend>{% trans "Phone numbers" %}</legend>
 	{{ phone_formset.management_form }}
 	{% for form in phone_formset.forms %}
 	<p>

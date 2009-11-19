@@ -1,6 +1,8 @@
+{% load i18n %}
+
 {% if object.instant_messenger.all %}
 <div id="contant_ims">
-	<h3>Instant Messengers</h3>
+	<h3>{% trans "Instant Messengers" %}</h3>
 	
 	<ul class="link_list">
 	{% for im in object.instant_messenger.all %}

@@ -1,11 +1,13 @@
+{% load i18n %}
+
 <div id="contact_notes">
 	<form action="{% url comments-post-comment %}" method="post" accept-charset="utf-8">
-		<p><label for="id_comment">Comment</label><textarea name="id_comment" id="id_comment" rows="8" cols="40"></textarea></p>
-		<p><input type="submit" value="Add"></p>
+		<p><label for="id_comment">{% trans "Comment" %}</label><textarea name="id_comment" id="id_comment" rows="8" cols="40"></textarea></p>
+		<p><input type="submit" value="{% trans "Add" %}"></p>
 	</form>
 	
 	{% if object.note.all %}
-	<h3>Notes</h3>
+	<h3>{% trans "Notes" %}</h3>
 	
 	{% for note in object.note.all %}
 	<div id="note-{{ comment.id }}">

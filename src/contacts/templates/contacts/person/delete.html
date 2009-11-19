@@ -1,20 +1,20 @@
 {% extends "contacts/base.html" %}
 {% load i18n %}
 
-{% block title %}{{ block.super }}: Delete {{ object }}{% endblock %}
+{% block title %}{{ block.super }}: {% trans "Delete" %} {{ object }}{% endblock %}
 
 {% block content_title %}
-	<h2>Delete {{ object }}</h2>
+	<h2>{% trans "Delete" %} {{ object }}</h2>
 {% endblock %}
 
 {% block content %}
 	<form action="." method="post" accept-charset="utf-8">
 		<p>
 			<select name="delete_person" id="delete_company" size="1">
-				<option value="No">No</option>
-				<option value="Yes">Yes</option>
+				<option value="No">{% trans "No" %}</option>
+				<option value="Yes">{% trans "Yes" %}</option>
 			</select>
-			<input type="submit" value="Submit">
+			<input type="submit" value="{% trans "Submit" %}">
 		</p>
 	</form>
 {% endblock %}

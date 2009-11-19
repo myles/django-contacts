@@ -1,10 +1,10 @@
 {% extends "contacts/base.html" %}
 {% load i18n %}
 
-{% block title %}{{ block.super }}: Create a new Company{% endblock %}
+{% block title %}{{ block.super }}: {% trans "Create a new Company" %}{% endblock %}
 
 {% block content_title %}
-	<h2>Create a new Company</h2>
+	<h2>{% trans "Create a new Company" %}</h2>
 {% endblock %}
 
 {% block content %}
@@ -15,6 +15,6 @@
 			{{ form.as_p }}
 		{% endfor %}
 		
-		<p><input type="submit" value="Create"></p>
+		<p><input type="submit" value="{% trans "Create" %}"></p>
 	</form>
 {% endblock %}
