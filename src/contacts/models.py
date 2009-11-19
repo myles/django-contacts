@@ -107,7 +107,7 @@ class Person(models.Model):
 			'slug': self.slug,
 		})
 
-PHONE_LOCATION_CHOICIES = (
+PHONE_LOCATION_CHOICES = (
 	('work', _('Work')),
 	('mobile', _('Mobile')),
 	('fax', _('Fax')),
@@ -125,7 +125,7 @@ class PhoneNumber(models.Model):
 	
 	phone_number = models.CharField(_('number'), max_length=50)
 	location = models.CharField(_('location'), max_length=6,
-		choices=PHONE_LOCATION_CHOICIES, default='work')
+		choices=PHONE_LOCATION_CHOICES, default='work')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
