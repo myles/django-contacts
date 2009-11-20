@@ -107,6 +107,47 @@ class Person(models.Model):
 			'slug': self.slug,
 		})
 
+class Group(models.Model):
+	"""Group model."""
+	name = models.CharField(_('name'), max_length=200)
+	slug = models.SlugField(_('slug'), max_length=50, unique=True)
+	about = models.TextField(_('about'), blank=True, null=True)
+	
+	people = models.ManyToManyField(Person, verbose_name='people', blank=True,
+		null=True)
+	companies = models.ManyToManyField(Company, verbose_name='companies',
+		blank=True, null=True)
+	
+	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
+	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+	
+	class Meta:
+		db_table = 'contacts_groups'
+		ordering = ('name',)
+		verbose_name = _('group')
+		verbose_name_plural = _('groups')
+	
+	def __unicode__(self):
+		return u"%s" % self.name
+	
+	@permalink
+	def get_absolute_url(self):
+		return ('contacts_group_detail', None, {
+			'slug': self.slug,
+		})
+	
+	@permalink
+	def get_update_url(self):
+		return ('contacts_group_update', None, {
+			'slug': self.slug,
+		})
+	
+	@permalink
+	def get_delete_url(self):
+		return ('contacts_person_delete', None, {
+			'slug': self.slug,
+		})
+
 PHONE_LOCATION_CHOICES = (
 	('work', _('Work')),
 	('mobile', _('Mobile')),
