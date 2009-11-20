@@ -46,5 +46,16 @@
 			"date_modified": "2009-05-29 00:56:06",
 			"date_added": "2009-05-29 00:56:06"
 		}
+	},
+	{
+		"pk": 1,
+		"model": "contacts.group",
+		"fields": {
+			"name": "Torontonian",
+			"slug": "torontonian",
+			"about": "People and Companies from Toronto.",
+			"people": [1],
+			"companies": [1]
+		}
 	}
 ]

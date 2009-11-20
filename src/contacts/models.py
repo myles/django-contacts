@@ -144,7 +144,7 @@ class Group(models.Model):
 	
 	@permalink
 	def get_delete_url(self):
-		return ('contacts_person_delete', None, {
+		return ('contacts_group_delete', None, {
 			'slug': self.slug,
 		})
 

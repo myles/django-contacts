@@ -1,0 +1,54 @@
+{% extends "contacts/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ block.super }}: {{ object }}{% endblock %}
+
+{% block content_title %}
+	<h2>
+		{{ object }}
+		{% if object.companies or object.people %}
+		<span class="alt">({% spaceless %}
+			{% if object.companies %}
+				{{ object.companies.count }}
+				<a href="#companies" title="Companies in this group.">
+					Compan{{ object.companies.count|pluralize:"y,ies" }}</a>
+			{% endif %}
+			{% if object.companies and object.people %}&amp;{% endif %}
+			{% if object.people %}
+				{{ object.people.count }}
+				<a href="#people" title="People in this group.">
+					Pe{{ object.people.count|pluralize:"rson,ople" }}</a>
+			{% endif %}
+		{% endspaceless %})</span>
+		{% endif %}
+	</h2>
+	
+	<p>
+		<a href="{{ object.get_update_url }}">{% trans "Update" %}</a>
+		<a href="{{ object.get_delete_url }}">{% trans "Delete" %}</a>
+	</p>
+{% endblock %}
+
+{% block content %}
+	{{ object.about|linebreaks }}
+	
+	<div class="group_block" id="groups_people">
+		<a name="people"></a>
+		<h3>{% trans "People" %}</h3>
+		<ul>
+		{% for person in object.people.all %}
+			<li><a href="{{ person.get_absolute_url }}">{{ person }}</a></li>
+		{% endfor %}
+		</ul>
+	</div>
+	
+	<div class="group_block" id="groups_companies">
+		<a name="companies"></a>
+		<h3>{% trans "Companies" %}</h3>
+		<ul>
+		{% for company in object.companies.all %}
+			<li><a href="{{ company.get_absolute_url }}">{{ company }}</a></li>
+		{% endfor %}
+		</ul>
+	</div>
+{% endblock %}
