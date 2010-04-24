@@ -14,7 +14,8 @@ class Company(models.Model):
 		null=True)
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
 	about = models.TextField(_('about'), blank=True, null=True)
-	
+	logo = models.ImageField(_('photo'), upload_to='contacts/companies/', blank=True)	
+
 	phone_number = GenericRelation('PhoneNumber')
 	email_address = GenericRelation('EmailAddress')
 	instant_messenger = GenericRelation('InstantMessenger')
@@ -56,14 +57,14 @@ class Person(models.Model):
 	"""Person model."""
 	first_name = models.CharField(_('first name'), max_length=100)
 	last_name = models.CharField(_('last name'), max_length=200)
-	nickname = models.CharField(_('nickname'), max_length=100, blank=True,
-		null=True)
+	nickname = models.CharField(_('nickname'), max_length=100, blank=True)
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
-	title = models.CharField(_('title'), max_length=200, blank=True, null=True)
+	title = models.CharField(_('title'), max_length=200, blank=True)
 	company = models.ForeignKey(Company)
-	about = models.TextField(_('about'), blank=True, null=True)
+	about = models.TextField(_('about'), blank=True)
+	photo = models.ImageField(_('photo'), upload_to='contacts/person/', blank=True)
 	
-	user = models.ForeignKey(User, blank=True, null=True,
+	user = models.OneToOneField(User, blank=True, null=True,
 		verbose_name=_('user'))
 	
 	phone_number = GenericRelation('PhoneNumber')
@@ -111,7 +112,7 @@ class Group(models.Model):
 	"""Group model."""
 	name = models.CharField(_('name'), max_length=200)
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
-	about = models.TextField(_('about'), blank=True, null=True)
+	about = models.TextField(_('about'), blank=True)
 	
 	people = models.ManyToManyField(Person, verbose_name='people', blank=True,
 		null=True)
@@ -273,12 +274,10 @@ class StreetAddress(models.Model):
 	object_id = models.IntegerField(db_index=True)
 	content_object = generic.GenericForeignKey()
 	
-	street = models.TextField(_('street'), blank=True, null=True)
-	city = models.CharField(_('city'), max_length=200, blank=True, null=True)
-	province = models.CharField(_('province'), max_length=200, blank=True,
-		null=True)
-	postal_code = models.CharField(_('postal code'), max_length=10, blank=True,
-		null=True)
+	street = models.TextField(_('street'), blank=True)
+	city = models.CharField(_('city'), max_length=200, blank=True)
+	province = models.CharField(_('province'), max_length=200, blank=True)
+	postal_code = models.CharField(_('postal code'), max_length=10, blank=True)
 	country = models.CharField(_('country'), max_length=100)
 	location = models.CharField(_('location'), max_length=6,
 		choices=LOCATION_CHOICES, default='work')
