@@ -1,162 +1,169 @@
-from django.core.urlresolvers import reverse
-from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
+from django.template.defaultfilters import slugify
 
 from contacts.models import Person, Group
-from contacts.views import small_render_to_response
 from contacts.forms import PersonCreateForm, PersonUpdateForm
 
-def list(request, page=1, template_name='contacts/person/list.html'):
-	"""List of all the people.
-	
-	:param template_name: Add a custom template.
-	"""
-	
-	person_list = Person.objects.all()
-	paginator = Paginator(person_list, 20)
-	
-	try:
-		people = paginator.page(page)
-	except (EmptyPage, InvalidPage):
-		people = paginator.page(paginator.num_pages)
-	
-	context = {
-		'object_list': people.object_list,
-		'has_next': people.has_next(),
-		'has_previous': people.has_previous(),
-		'has_other_pages': people.has_other_pages(),
-		'start_index': people.start_index(),
-		'end_index': people.end_index(),
-		'previous_page_number': people.previous_page_number(),
-		'next_page_number': people.next_page_number(),
-	}
-	
-	return small_render_to_response(request, template_name, context)
+def list(request, page=1, template='contacts/person/list.html'):
+    """List of all the people.
 
-def detail(request, slug, template_name='contacts/person/detail.html'):
-	"""Detail of a person.
-	
-	:param template_name: Add a custom template.
-	"""
-	
-	try:
-		person = Person.objects.get(slug__iexact=slug)
-	except Person.DoesNotExist:
-		raise Http404
-	
-	context = {
-		'object': person,
-	}
-	
-	return small_render_to_response(request, template_name, context)
+    :param template: Add a custom template.
+    """
+    
 
-def create(request, template_name='contacts/person/create.html'):
-	"""Create a person.
-	
-	:param template_name: A custom template.
-	"""
+    person_list = Person.objects.all()
+    paginator = Paginator(person_list, 20)
 
-	user = request.user
-	if not user.has_perm('add_person'):
-		return HttpResponseForbidden()
+    try:
+        people = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        people = paginator.page(paginator.num_pages)
 
-	if request.method == 'POST':
-		form = PersonCreateForm(request.POST)
-		if form.is_valid():
-			p = form.save(commit=False)
-			p.slug = slugify("%s %s" % (p.first_name, p.last_name))
-			p.save()
-			return HttpResponseRedirect(p.get_absolute_url())
-		else:
-			return HttpResponseServerError
+    kwvars = {
+        'object_list': people.object_list,
+        'has_next': people.has_next(),
+        'has_previous': people.has_previous(),
+        'has_other_pages': people.has_other_pages(),
+        'start_index': people.start_index(),
+        'end_index': people.end_index(),
+        'previous_page_number': people.previous_page_number(),
+        'next_page_number': people.next_page_number(),
+    }
 
-	context = {
-		'form': PersonCreateForm(request.POST)
-	}
+    return render_to_response(template, kwvars, RequestContext(request))
 
-	return small_render_to_response(request, template_name, context)
+def detail(request, slug, template='contacts/person/detail.html'):
+    """Detail of a person.
 
-def update(request, slug, template_name='contacts/person/update.html'):
-	"""Update a person.
+    :param template: Add a custom template.
+    """
+    
 
-	:param template_name: A custom template.
-	"""
+    try:
+        person = Person.objects.get(slug__iexact=slug)
+    except Person.DoesNotExist:
+        raise Http404
 
-	user = request.user
-	if not user.has_perm('change_person'):
-		return HttpResponseForbidden()
+    kwvars = {
+        'object': person,
+    }
 
-	try:
-		person = Person.objects.get(slug__iexact=slug)
-	except person.DoesNotExist:
-		raise Http404
+    return render_to_response(template, kwvars, RequestContext(request))
 
-	if request.method == 'POST':
-		form = PersonUpdateForm(request.POST, instance=person)
-		phone_formset = PhoneNumberFormSet(request.POST, instance=person)
-		email_formset = EmailAddressFormSet(request.POST, instance=person)
-		im_formset = InstantMessengerFormSet(request.POST, instance=person)
-		website_formset = WebSiteFormSet(request.POST, instance=person)
-		address_formset = StreetAddressFormSet(request.POST, instance=person)
+def create(request, template='contacts/person/create.html'):
+    """Create a person.
 
-		if form.is_valid() and phone_formset.is_valid() and \
-			email_formset.is_valid() and im_formset.is_valid() and \
-			website_formset.is_valid() and address_formset.is_valid():
-			form.save()
-			phone_formset.save()
-			email_formset.save()
-			im_formset.save()
-			website_formset.save()
-			address_formset.save()
-			return HttpResponseRedirect(person.get_absolute_url())
-		else:
-			return HttpResponseServerError
+    :param template: A custom template.
+    """
+    
 
-	form = PersonUpdateForm(instance=person)
-	phone_formset = PhoneNumberFormSet(instance=person)
-	email_formset = EmailAddressFormSet(instance=person)
-	im_formset = InstantMessengerFormSet(instance=person)
-	website_formset = WebSiteFormSet(instance=person)
-	address_formset = StreetAddressFormSet(instance=person)
+    user = request.user
+    if not user.has_perm('add_person'):
+        return HttpResponseForbidden()
 
-	context = {
-		'form': form,
-		'phone_formset': phone_formset,
-		'email_formset': email_formset,
-		'im_formset': im_formset,
-		'website_formset': website_formset,
-		'address_formset': address_formset,
-		'object': person,
-	}
+    if request.method == 'POST':
+        form = PersonCreateForm(request.POST)
 
-	return small_render_to_response(request, template_name, context)
+        if form.is_valid():
+            p = form.save(commit=False)
+            p.slug = slugify("%s %s" % (p.first_name, p.last_name))
+            p.save()
+            return HttpResponseRedirect(p.get_absolute_url())
+    else:
+        form = PersonCreateForm()
 
-def delete(request, slug, template_name='contacts/person/delete.html'):
-	"""Delete a company.
+    kwvars = {
+        'form': form
+    }
 
-	:param template_name: A custom template.
-	"""
+    return render_to_response(template, kwvars, RequestContext(request))
 
-	user = request.user
-	if not user.has_perm('delete_person'):
-		return HttpResponseForbidden()
+def update(request, slug, template='contacts/person/update.html'):
+    """Update a person.
 
-	try:
-		person = Person.objects.get(slug__iexact=slug)
-	except Person.DoesNotExist:
-		raise Http404
+    :param template: A custom template.
+    """
+    
 
-	if request.method == 'POST':
-		new_data = request.POST.copy()
-		if new_data['delete_person'] == 'Yes':
-			person.delete()
-			return HttpResponseRedirect(reverse('contacts_person_list'))
-		else:
-			return HttpResponseRedirect(person.get_absolute_url())
+    user = request.user
+    if not user.has_perm('change_person'):
+        return HttpResponseForbidden()
 
-	context = {
-		'object': person,
-	}
+    try:
+        person = Person.objects.get(slug__iexact=slug)
+    except person.DoesNotExist:
+        raise Http404
 
-	return small_render_to_response(request, template_name, context)
+    if request.method == 'POST':
+        form = PersonUpdateForm(request.POST, instance=person)
+        phone_formset = PhoneNumberFormSet(request.POST, instance=person)
+        email_formset = EmailAddressFormSet(request.POST, instance=person)
+        im_formset = InstantMessengerFormSet(request.POST, instance=person)
+        website_formset = WebSiteFormSet(request.POST, instance=person)
+        address_formset = StreetAddressFormSet(request.POST, instance=person)
+
+        if form.is_valid() and phone_formset.is_valid() and \
+            email_formset.is_valid() and im_formset.is_valid() and \
+            website_formset.is_valid() and address_formset.is_valid():
+            form.save()
+            phone_formset.save()
+            email_formset.save()
+            im_formset.save()
+            website_formset.save()
+            address_formset.save()
+            return HttpResponseRedirect(person.get_absolute_url())
+        else:
+            return HttpResponseServerError
+
+    form = PersonUpdateForm(instance=person)
+    phone_formset = PhoneNumberFormSet(instance=person)
+    email_formset = EmailAddressFormSet(instance=person)
+    im_formset = InstantMessengerFormSet(instance=person)
+    website_formset = WebSiteFormSet(instance=person)
+    address_formset = StreetAddressFormSet(instance=person)
+
+    kwvars = {
+        'form': form,
+        'phone_formset': phone_formset,
+        'email_formset': email_formset,
+        'im_formset': im_formset,
+        'website_formset': website_formset,
+        'address_formset': address_formset,
+        'object': person,
+    }
+
+    return render_to_response(template, kwvars, RequestContext(request))
+
+def delete(request, slug, template='contacts/person/delete.html'):
+    """Delete a company.
+
+    :param template: A custom template.
+    """
+    
+
+    user = request.user
+    if not user.has_perm('delete_person'):
+        return HttpResponseForbidden()
+
+    try:
+        person = Person.objects.get(slug__iexact=slug)
+    except Person.DoesNotExist:
+        raise Http404
+
+    if request.method == 'POST':
+        new_data = request.POST.copy()
+        if new_data['delete_person'] == 'Yes':
+            person.delete()
+            return HttpResponseRedirect(reverse('contacts_person_list'))
+        else:
+            return HttpResponseRedirect(person.get_absolute_url())
+
+    kwvars = {
+        'object': person
+    }
+
+    return render_to_response(template, kwvars, RequestContext(request))

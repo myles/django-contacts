@@ -9,9 +9,9 @@
 
 {% block content %}
 	<p>
-		<a href="{% url contants_company_create %}">{% trans "Create" %}</a>
+		<a href="{% url contacts_company_create %}">{% trans "Create" %}</a>
 	</p>
-	
+
 	<ul class="link_list">
 	{% for company in object_list %}
 		<li id="company-{{ company.id }}"><a href="{{ company.get_absolute_url }}">{{ company }}</a></li>

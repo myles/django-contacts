@@ -9,9 +9,9 @@
 
 {% block content %}
 	<p>
-		<a href="{% url contants_group_create %}">{% trans "Create" %}</a>
+		<a href="{% url contacts_group_create %}">{% trans "Create" %}</a>
 	</p>
-	
+
 	<ul class="link_list">
 	{% for group in object_list %}
 		<li id="group-{{ group.id }}"><a href="{{ group.get_absolute_url }}">{{ group }}</a></li>

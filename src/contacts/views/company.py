@@ -4,164 +4,164 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
 
 from contacts.models import Company
-from contacts.views import small_render_to_response
 from contacts.forms import CompanyCreateForm, CompanyUpdateForm
 
-def list(request, page=1, template_name='contacts/company/list.html'):
-	"""List of all the comapnies.
-	
-	:param template_name: Add a custom template.
-	"""
-	company_list = Company.objects.all()
-	paginator = Paginator(company_list, 20)
-	
-	try:
-		companies = paginator.page(page)
-	except (EmptyPage, InvalidPage):
-		companies = paginator.page(paginator.num_pages)
-	
-	context = {
-		'object_list': companies.object_list,
-		'has_next': companies.has_next(),
-		'has_previous': companies.has_previous(),
-		'has_other_pages': companies.has_other_pages(),
-		'start_index': companies.start_index(),
-		'end_index': companies.end_index(),
-		'previous_page_number': companies.previous_page_number(),
-		'next_page_number': companies.next_page_number(),
-	}
-	
-	return small_render_to_response(request, template_name, context)
+def list(request, page=1, template='contacts/company/list.html'):
+    """List of all the comapnies.
 
-def detail(request, slug, template_name='contacts/company/detail.html'):
-	"""Detail of a company.
+    :param template: Add a custom template.
+    """
 
-	:param template_name: Add a custom template.
-	"""
+    company_list = Company.objects.all()
+    paginator = Paginator(company_list, 20)
 
-	try:
-		company = Company.objects.get(slug__iexact=slug)
-	except Company.DoesNotExist:
-		raise Http404
+    try:
+        companies = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        companies = paginator.page(paginator.num_pages)
 
-	context = {
-		'object': company,
-	}
+    kwvars = {
+        'object_list': companies.object_list,
+        'has_next': companies.has_next(),
+        'has_previous': companies.has_previous(),
+        'has_other_pages': companies.has_other_pages(),
+        'start_index': companies.start_index(),
+        'end_index': companies.end_index(),
+        'previous_page_number': companies.previous_page_number(),
+        'next_page_number': companies.next_page_number(),
+    }
 
-	return small_render_to_response(request, template_name, context)
+    render_to_response(template, kwvars, RequestContext(request))
 
-def create(request, template_name='contacts/company/create.html'):
-	"""Create a company.
+def detail(request, slug, template='contacts/company/detail.html'):
+    """Detail of a company.
 
-	:param template_name: A custom template.
-	:param form: A custom form.
-	"""
+    :param template: Add a custom template.
+    """
 
-	user = request.user
-	if not user.has_perm('add_company'):
-		return HttpResponseForbidden()
+    try:
+        company = Company.objects.get(slug__iexact=slug)
+    except Company.DoesNotExist:
+        raise Http404
 
-	if request.method == 'POST':
-		company_form = CompanyCreateForm(request.POST)
-		if company_form.is_valid():
-			c = company_form.save(commit=False)
+    kwvars = {
+        'object': company,
+    }
 
-			# TODO Make sure that the slug isn't already in the database
-			if c.nickname:
-				c.slug = slugify(c.nickname)
-			else:
-				c.slug = slugify(c.name)
+    render_to_response(template, kwvars, RequestContext(request))
 
-			c.save()
-			return HttpResponseRedirect(c.get_absolute_url())
-		else:
-			return HttpResponseServerError
+def create(request, template='contacts/company/create.html'):
+    """Create a company.
 
-	context = {
-		'form': CompanyCreateForm(request.POST)
-	}
+    :param template: A custom template.
+    :param form: A custom form.
+    """
 
-	return small_render_to_response(request, template_name, context)
+    user = request.user
+    if not user.has_perm('add_company'):
+        return HttpResponseForbidden()
 
-def update(request, slug, template_name='contacts/company/update.html'):
-	"""Update a company.
+    if request.method == 'POST':
+        company_form = CompanyCreateForm(request.POST)
+        if company_form.is_valid():
+            c = company_form.save(commit=False)
 
-	:param template_name: A custom template.
-	:param form: A custom form.
-	"""
+            # TODO Make sure that the slug isn't already in the database
+            if c.nickname:
+                c.slug = slugify(c.nickname)
+            else:
+                c.slug = slugify(c.name)
 
-	user = request.user
-	if not user.has_perm('change_company'):
-		return HttpResponseForbidden()
+            c.save()
+            return HttpResponseRedirect(c.get_absolute_url())
+        else:
+            return HttpResponseServerError
 
-	try:
-		company = Company.objects.get(slug__iexact=slug)
-	except Company.DoesNotExist:
-		raise Http404
+    kwvars = {
+        'form': CompanyCreateForm(request.POST)
+    }
 
-	form = CompanyUpdateForm(instance=company)
-	phone_formset = PhoneNumberFormSet(instance=company)
-	email_formset = EmailAddressFormSet(instance=company)
-	im_formset = InstantMessengerFormSet(instance=company)
-	website_formset = WebSiteFormSet(instance=company)
-	address_formset = StreetAddressFormSet(instance=company)
+    render_to_response(template, kwvars, RequestContext(request))
 
-	if request.method == 'POST':
-		form = CompanyUpdateForm(request.POST, instance=company)
-		phone_formset = PhoneNumberFormSet(request.POST, instance=company)
-		email_formset = EmailAddressFormSet(request.POST, instance=company)
-		im_formset = InstantMessengerFormSet(request.POST, instance=company)
-		website_formset = WebSiteFormSet(request.POST, instance=company)
-		address_formset = StreetAddressFormSet(request.POST, instance=company)
+def update(request, slug, template='contacts/company/update.html'):
+    """Update a company.
 
-		if form.is_valid() and phone_formset.is_valid() and \
-			email_formset.is_valid() and im_formset.is_valid() and \
-			website_formset.is_valid() and address_formset.is_valid():
-			form.save()
-			phone_formset.save()
-			email_formset.save()
-			im_formset.save()
-			website_formset.save()
-			address_formset.save()
-			return HttpResponseRedirect(company.get_absolute_url())
+    :param template: A custom template.
+    :param form: A custom form.
+    """
 
-	context = {
-		'form': form,
-		'phone_formset': phone_formset,
-		'email_formset': email_formset,
-		'im_formset': im_formset,
-		'website_formset': website_formset,
-		'address_formset': address_formset,
-		'object': company,
-	}
+    user = request.user
+    if not user.has_perm('change_company'):
+        return HttpResponseForbidden()
 
-	return small_render_to_response(request, template_name, context)
+    try:
+        company = Company.objects.get(slug__iexact=slug)
+    except Company.DoesNotExist:
+        raise Http404
 
-def delete(request, slug, template_name='contacts/company/delete.html'):
-	"""Update a company.
+    form = CompanyUpdateForm(instance=company)
+    phone_formset = PhoneNumberFormSet(instance=company)
+    email_formset = EmailAddressFormSet(instance=company)
+    im_formset = InstantMessengerFormSet(instance=company)
+    website_formset = WebSiteFormSet(instance=company)
+    address_formset = StreetAddressFormSet(instance=company)
 
-	:param template_name: A custom template.
-	"""
+    if request.method == 'POST':
+        form = CompanyUpdateForm(request.POST, instance=company)
+        phone_formset = PhoneNumberFormSet(request.POST, instance=company)
+        email_formset = EmailAddressFormSet(request.POST, instance=company)
+        im_formset = InstantMessengerFormSet(request.POST, instance=company)
+        website_formset = WebSiteFormSet(request.POST, instance=company)
+        address_formset = StreetAddressFormSet(request.POST, instance=company)
 
-	user = request.user
-	if not user.has_perm('delete_company'):
-		return HttpResponseForbidden()
+        if form.is_valid() and phone_formset.is_valid() and \
+            email_formset.is_valid() and im_formset.is_valid() and \
+            website_formset.is_valid() and address_formset.is_valid():
+            form.save()
+            phone_formset.save()
+            email_formset.save()
+            im_formset.save()
+            website_formset.save()
+            address_formset.save()
+            return HttpResponseRedirect(company.get_absolute_url())
 
-	try:
-		company = Company.objects.get(slug__iexact=slug)
-	except Company.DoesNotExist:
-		raise Http404
+    kwvars = {
+        'form': form,
+        'phone_formset': phone_formset,
+        'email_formset': email_formset,
+        'im_formset': im_formset,
+        'website_formset': website_formset,
+        'address_formset': address_formset,
+        'object': company,
+    }
 
-	if request.method == 'POST':
-		new_data = request.POST.copy()
-		if new_data['delete_company'] == 'Yes':
-			company.delete()
-			return HttpResponseRedirect(reverse('contacts_company_list'))
-		else:
-			return HttpResponseRedirect(company.get_absolute_url())
+    render_to_response(template, kwvars, RequestContext(request))
 
-	context = {
-		'object': company,
-	}
+def delete(request, slug, template='contacts/company/delete.html'):
+    """Update a company.
 
-	return small_render_to_response(request, template_name, context)
+    :param template: A custom template.
+    """
+
+    user = request.user
+    if not user.has_perm('delete_company'):
+        return HttpResponseForbidden()
+
+    try:
+        company = Company.objects.get(slug__iexact=slug)
+    except Company.DoesNotExist:
+        raise Http404
+
+    if request.method == 'POST':
+        new_data = request.POST.copy()
+        if new_data['delete_company'] == 'Yes':
+            company.delete()
+            return HttpResponseRedirect(reverse('contacts_company_list'))
+        else:
+            return HttpResponseRedirect(company.get_absolute_url())
+
+    kwvars = {
+        'object': company,
+    }
+
+    render_to_response(template, kwvars, RequestContext(request))
