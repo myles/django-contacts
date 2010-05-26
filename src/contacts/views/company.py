@@ -2,6 +2,8 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 
 from contacts.models import Company
 from contacts.forms import CompanyCreateForm, CompanyUpdateForm
@@ -31,7 +33,7 @@ def list(request, page=1, template='contacts/company/list.html'):
         'next_page_number': companies.next_page_number(),
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))
 
 def detail(request, slug, template='contacts/company/detail.html'):
     """Detail of a company.
@@ -48,7 +50,7 @@ def detail(request, slug, template='contacts/company/detail.html'):
         'object': company,
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))
 
 def create(request, template='contacts/company/create.html'):
     """Create a company.
@@ -81,7 +83,7 @@ def create(request, template='contacts/company/create.html'):
         'form': CompanyCreateForm(request.POST)
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))
 
 def update(request, slug, template='contacts/company/update.html'):
     """Update a company.
@@ -135,7 +137,7 @@ def update(request, slug, template='contacts/company/update.html'):
         'object': company,
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))
 
 def delete(request, slug, template='contacts/company/delete.html'):
     """Update a company.
@@ -164,4 +166,4 @@ def delete(request, slug, template='contacts/company/delete.html'):
         'object': company,
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))

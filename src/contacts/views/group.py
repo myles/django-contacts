@@ -2,6 +2,8 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 
 from contacts.models import Group
 from contacts.forms import GroupCreateForm, GroupUpdateForm
@@ -31,7 +33,7 @@ def list(request, page=1, template='contacts/group/list.html'):
         'next_page_number': groups.next_page_number(),
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))
 
 def detail(request, slug, template='contacts/group/detail.html'):
     """Detail of a group.
@@ -48,7 +50,7 @@ def detail(request, slug, template='contacts/group/detail.html'):
         'object': group,
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))
 
 def create(request, template='contacts/group/create.html'):
     """Create a group.
@@ -78,7 +80,7 @@ def create(request, template='contacts/group/create.html'):
         'form': GroupCreateForm(request.POST)
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))
 
 def update(request, slug, template='contacts/group/update.html'):
     """Update a group.
@@ -110,7 +112,7 @@ def update(request, slug, template='contacts/group/update.html'):
         'object': group,
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))
 
 def delete(request, slug, template='contacts/group/delete.html'):
     """Update a group.
@@ -139,4 +141,4 @@ def delete(request, slug, template='contacts/group/delete.html'):
         'object': group,
     }
 
-    render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, kwvars, RequestContext(request))
