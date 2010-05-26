@@ -9,6 +9,8 @@
 
 {% block content %}
 	<form action="." method="post" accept-charset="utf-8">
+        {% csrf_token %}
+        {{ form.errors }}
 		<p>
 			<label for="id_first_name">{{ form.first_name.label }}</label>
 			{{ form.first_name }}

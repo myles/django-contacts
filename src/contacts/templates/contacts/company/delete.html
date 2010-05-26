@@ -9,6 +9,7 @@
 
 {% block content %}
 	<form action="." method="post" accept-charset="utf-8">
+        {% csrf_token %}
 		<p>
 			<select name="delete_company" id="delete_company" size="1">
 				<option value="No">{% trans "No" %}</option>

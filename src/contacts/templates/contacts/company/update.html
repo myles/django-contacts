@@ -9,14 +9,15 @@
 
 {% block content %}
 	<form action="." method="post" accept-charset="utf-8">
+        {% csrf_token %}
 		<p>{{ form.name }}</p>
-		
+
 		{% include "contacts/_phone_number_form.html" %}
 		{% include "contacts/_email_address_form.html" %}
 		{% include "contacts/_instant_messenger_form.html" %}
 		{% include "contacts/_web_site_form.html" %}
 		{% include "contacts/_street_address_form.html" %}
-		
+
 		<p><input type="submit" value="{% trans "Save" %}"></p>
 	</form>
 {% endblock %}
