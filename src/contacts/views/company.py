@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from contacts.models import Company
-from contacts.forms import CompanyCreateForm, CompanyUpdateForm
+from contacts.forms import CompanyCreateForm, CompanyUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet
 
 def list(request, page=1, template='contacts/company/list.html'):
     """List of all the comapnies.

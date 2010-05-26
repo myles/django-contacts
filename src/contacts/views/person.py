@@ -6,14 +6,14 @@ from django.template import RequestContext
 from django.template.defaultfilters import slugify
 
 from contacts.models import Person, Group
-from contacts.forms import PersonCreateForm, PersonUpdateForm
+from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet
 
 def list(request, page=1, template='contacts/person/list.html'):
     """List of all the people.
 
     :param template: Add a custom template.
     """
-    
+
 
     person_list = Person.objects.all()
     paginator = Paginator(person_list, 20)
@@ -41,7 +41,7 @@ def detail(request, slug, template='contacts/person/detail.html'):
 
     :param template: Add a custom template.
     """
-    
+
 
     try:
         person = Person.objects.get(slug__iexact=slug)
@@ -59,7 +59,7 @@ def create(request, template='contacts/person/create.html'):
 
     :param template: A custom template.
     """
-    
+
 
     user = request.user
     if not user.has_perm('add_person'):
@@ -87,7 +87,7 @@ def update(request, slug, template='contacts/person/update.html'):
 
     :param template: A custom template.
     """
-    
+
 
     user = request.user
     if not user.has_perm('change_person'):
@@ -143,7 +143,7 @@ def delete(request, slug, template='contacts/person/delete.html'):
 
     :param template: A custom template.
     """
-    
+
 
     user = request.user
     if not user.has_perm('delete_person'):
