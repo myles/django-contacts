@@ -12,5 +12,12 @@ Requirements
  * django.contrib.auth
  * django.contrib.contenttypes
 
+Thanks
+------
+
+* Marco Louro: http://marcolouro.com/
+* Enrico Batista da Luz: http://ricobl.wordpress.com/
+
 .. _Python: http://python.org/
 .. _Django: http://djangoproject.com/
+
