@@ -8,13 +8,13 @@ def read(fname):
 setup(
 	name = 'django-contacts',
 	version = '0.3',
-	url = 'http://github.com/myles/django-contacts',
+	url = 'http://github.com/asgardproject/django-contacts',
 	license = 'BSD License',
 	description = 'A Django address book application.',
 	long_description = read('README'),
 	
-	author = 'Myles Braithwaite',
-	author_email = 'me@mylesbraithwaite.com',
+	author = 'Asgard Project',
+	author_email = 'hi@asgardproject.com',
 	
 	packages = find_packages('src'),
 	package_dir = {'': 'src'},
