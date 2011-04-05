@@ -11,10 +11,9 @@
 		{% endif %}
 	</h2>
 	<p class="meta org">
-		{% if object.title %}<span class="title">{{ object.title }}</span> at {% endif %}
-		<a href="{{ object.company.get_absolute_url }}" class="organization-name">
-			{{ object.company }}
-		</a>
+		{% if object.title %}<span class="title">{{ object.title }}</span>{% endif %}
+		{% if object.title and object.company %}at{% endif %}
+		{% if object.company %}<a href="{{ object.company.get_absolute_url }}" class="organization-name">{{ object.company }}</a>{% endif %}
 	</p>
 	
 	<p>
