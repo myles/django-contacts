@@ -7,7 +7,7 @@ def read(fname):
 
 setup(
 	name = 'django-contacts',
-	version = '0.2',
+	version = '0.3',
 	url = 'http://github.com/myles/django-contacts',
 	license = 'BSD License',
 	description = 'A Django address book application.',
@@ -21,7 +21,6 @@ setup(
 	
 	install_requires = [
 		'setuptools',
-		'vobject',
 	],
 	
 	classifiers = [
