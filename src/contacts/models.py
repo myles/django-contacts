@@ -60,7 +60,7 @@ class Person(models.Model):
 	nickname = models.CharField(_('nickname'), max_length=100, blank=True)
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
 	title = models.CharField(_('title'), max_length=200, blank=True)
-	company = models.ForeignKey(Company)
+	company = models.ForeignKey(Company, blank=True, null=True)
 	about = models.TextField(_('about'), blank=True)
 	photo = models.ImageField(_('photo'), upload_to='contacts/person/', blank=True)
 	
