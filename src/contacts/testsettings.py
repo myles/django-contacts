@@ -11,6 +11,7 @@ INSTALLED_APPS = [
 	'django.contrib.admin',
 	'django.contrib.admindocs',
 	'django.contrib.comments',
+	'south',
 	'contacts',
 ]
 ROOT_URLCONF = 'contacts.testurls'
