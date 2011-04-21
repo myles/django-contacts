@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.template.defaultfilters import slugify
 
 from contacts.models import Person, Group
-from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet
+from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet, SpecialDateFormSet
 
 def list(request, page=1, template='contacts/person/list.html'):
     """List of all the people.
@@ -105,6 +105,7 @@ def update(request, slug, template='contacts/person/update.html'):
         im_formset = InstantMessengerFormSet(request.POST, instance=person)
         website_formset = WebSiteFormSet(request.POST, instance=person)
         address_formset = StreetAddressFormSet(request.POST, instance=person)
+        special_date_formset = SpecialDateFormSet(request.POST, instance=person)
 
         if form.is_valid() and phone_formset.is_valid() and \
             email_formset.is_valid() and im_formset.is_valid() and \
@@ -115,6 +116,7 @@ def update(request, slug, template='contacts/person/update.html'):
             im_formset.save()
             website_formset.save()
             address_formset.save()
+            special_date_formset.save()
             return HttpResponseRedirect(person.get_absolute_url())
         else:
             return HttpResponseServerError
@@ -125,6 +127,7 @@ def update(request, slug, template='contacts/person/update.html'):
     im_formset = InstantMessengerFormSet(instance=person)
     website_formset = WebSiteFormSet(instance=person)
     address_formset = StreetAddressFormSet(instance=person)
+    special_date_formset = SpecialDateFormSet(instance=person)
 
     kwvars = {
         'form': form,
@@ -133,6 +136,7 @@ def update(request, slug, template='contacts/person/update.html'):
         'im_formset': im_formset,
         'website_formset': website_formset,
         'address_formset': address_formset,
+        'special_date_formset': special_date_formset,
         'object': person,
     }
 

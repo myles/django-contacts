@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from contacts.models import Company
-from contacts.forms import CompanyCreateForm, CompanyUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet
+from contacts.forms import CompanyCreateForm, CompanyUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet, SpecialDateFormSet
 
 def list(request, page=1, template='contacts/company/list.html'):
     """List of all the comapnies.
@@ -107,7 +107,8 @@ def update(request, slug, template='contacts/company/update.html'):
     im_formset = InstantMessengerFormSet(instance=company)
     website_formset = WebSiteFormSet(instance=company)
     address_formset = StreetAddressFormSet(instance=company)
-
+    special_date_formset = SpecialDateFormSet(instance=company)
+    
     if request.method == 'POST':
         form = CompanyUpdateForm(request.POST, instance=company)
         phone_formset = PhoneNumberFormSet(request.POST, instance=company)
@@ -115,6 +116,7 @@ def update(request, slug, template='contacts/company/update.html'):
         im_formset = InstantMessengerFormSet(request.POST, instance=company)
         website_formset = WebSiteFormSet(request.POST, instance=company)
         address_formset = StreetAddressFormSet(request.POST, instance=company)
+        special_date_formset = SpecialDateFormSet(request.POST, instance=company)
 
         if form.is_valid() and phone_formset.is_valid() and \
             email_formset.is_valid() and im_formset.is_valid() and \
@@ -125,6 +127,7 @@ def update(request, slug, template='contacts/company/update.html'):
             im_formset.save()
             website_formset.save()
             address_formset.save()
+            special_date_formset.save()
             return HttpResponseRedirect(company.get_absolute_url())
 
     kwvars = {
@@ -134,6 +137,7 @@ def update(request, slug, template='contacts/company/update.html'):
         'im_formset': im_formset,
         'website_formset': website_formset,
         'address_formset': address_formset,
+        'special_date_formset': special_date_formset,
         'object': company,
     }
 

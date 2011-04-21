@@ -21,6 +21,7 @@ class Company(models.Model):
 	instant_messenger = GenericRelation('InstantMessenger')
 	web_site = GenericRelation('WebSite')
 	street_address = GenericRelation('StreetAddress')
+	special_date = GenericRelation('SpecialDate')
 	note = GenericRelation(Comment, object_id_field='object_pk')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
@@ -64,7 +65,6 @@ class Person(models.Model):
 	company = models.ForeignKey(Company, blank=True, null=True)
 	about = models.TextField(_('about'), blank=True)
 	photo = models.ImageField(_('photo'), upload_to='contacts/person/', blank=True)
-	birthday = models.DateField(_('birthday'), blank=True, null=True)
 	
 	user = models.OneToOneField(User, blank=True, null=True,
 		verbose_name=_('user'))
@@ -74,6 +74,7 @@ class Person(models.Model):
 	instant_messenger = GenericRelation('InstantMessenger')
 	web_site = GenericRelation('WebSite')
 	street_address = GenericRelation('StreetAddress')
+	special_date = GenericRelation('SpecialDate')
 	note = GenericRelation(Comment, object_id_field='object_pk')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
@@ -294,3 +295,24 @@ class StreetAddress(models.Model):
 		db_table = 'contacts_street_addresses'
 		verbose_name = _('street address')
 		verbose_name_plural = _('street addresses')
+
+class SpecialDate(models.Model):
+	content_type = models.ForeignKey(ContentType,
+		limit_choices_to={'app_label': 'contacts'})
+	object_id = models.IntegerField(db_index=True)
+	content_object = generic.GenericForeignKey()
+	
+	occasion = models.TextField(_('occasion'), max_length=200)
+	date = models.DateField(_('date'))
+	every_year = models.BooleanField(_('every year'), default=True)
+	
+	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
+	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+	
+	def __unicode__(self):
+		return u"%s: %s" % (self.occasion, self.date)
+	
+	class Meta:
+		db_table = 'contacts_special_dates'
+		verbose_name = _('special date')
+		verbose_name_plural = _('special dates')
