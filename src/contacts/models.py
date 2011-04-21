@@ -57,6 +57,7 @@ class Person(models.Model):
 	"""Person model."""
 	first_name = models.CharField(_('first name'), max_length=100)
 	last_name = models.CharField(_('last name'), max_length=200)
+	middle_name = models.CharField(_('middle name'), max_length=200, blank=True, null=True)
 	nickname = models.CharField(_('nickname'), max_length=100, blank=True)
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
 	title = models.CharField(_('title'), max_length=200, blank=True)
