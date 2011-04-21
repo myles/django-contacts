@@ -63,6 +63,7 @@ class Person(models.Model):
 	company = models.ForeignKey(Company, blank=True, null=True)
 	about = models.TextField(_('about'), blank=True)
 	photo = models.ImageField(_('photo'), upload_to='contacts/person/', blank=True)
+	birthday = models.DateField(_('birthday'), blank=True, null=True)
 	
 	user = models.OneToOneField(User, blank=True, null=True,
 		verbose_name=_('user'))
