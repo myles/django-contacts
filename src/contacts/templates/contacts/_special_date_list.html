@@ -8,7 +8,7 @@
 	{% for special_date in object.special_date.all %}
 		<li>
 		    <strong>{{ special_date.occasion }}</strong>:
-		    {{ special_date.date:"jS F" }}{% if not special_date.every_year %}{{ special_date.date:"Y" }}{% endif %}
+		    {{ special_date.date|date:"jS F" }}{% if not special_date.every_year %}{{ special_date.date|date:"Y" }}{% endif %}
 		</li>
 	{% endfor %}
 	</ul>
