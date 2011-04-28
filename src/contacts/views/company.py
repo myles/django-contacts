@@ -35,14 +35,14 @@ def list(request, page=1, template='contacts/company/list.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def detail(request, slug, template='contacts/company/detail.html'):
+def detail(request, pk, slug=None, template='contacts/company/detail.html'):
     """Detail of a company.
 
     :param template: Add a custom template.
     """
 
     try:
-        company = Company.objects.get(slug__iexact=slug)
+        company = Company.objects.get(pk__iexact=pk)
     except Company.DoesNotExist:
         raise Http404
 
@@ -85,7 +85,7 @@ def create(request, template='contacts/company/create.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def update(request, slug, template='contacts/company/update.html'):
+def update(request, pk, slug=None, template='contacts/company/update.html'):
     """Update a company.
 
     :param template: A custom template.
@@ -97,7 +97,7 @@ def update(request, slug, template='contacts/company/update.html'):
         return HttpResponseForbidden()
 
     try:
-        company = Company.objects.get(slug__iexact=slug)
+        company = Company.objects.get(pk__iexact=pk)
     except Company.DoesNotExist:
         raise Http404
 
@@ -143,7 +143,7 @@ def update(request, slug, template='contacts/company/update.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def delete(request, slug, template='contacts/company/delete.html'):
+def delete(request, pk, slug=None, template='contacts/company/delete.html'):
     """Update a company.
 
     :param template: A custom template.
@@ -154,7 +154,7 @@ def delete(request, slug, template='contacts/company/delete.html'):
         return HttpResponseForbidden()
 
     try:
-        company = Company.objects.get(slug__iexact=slug)
+        company = Company.objects.get(pk__iexact=pk)
     except Company.DoesNotExist:
         raise Http404
 

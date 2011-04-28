@@ -39,18 +39,21 @@ class Company(models.Model):
 	@permalink
 	def get_absolute_url(self):
 		return ('contacts_company_detail', None, {
+		    'pk': self.pk,
 			'slug': self.slug,
 		})
 	
 	@permalink
 	def get_update_url(self):
 		return ('contacts_company_update', None, {
+		    'pk': self.pk,
 			'slug': self.slug,
 		})
 	
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_company_delete', None, {
+		    'pk': self.pk,
 			'slug': self.slug,
 		})
 
@@ -96,18 +99,21 @@ class Person(models.Model):
 	@permalink
 	def get_absolute_url(self):
 		return ('contacts_person_detail', None, {
+		    'pk': self.pk,
 			'slug': self.slug,
 		})
 	
 	@permalink
 	def get_update_url(self):
 		return ('contacts_person_update', None, {
+		    'pk': self.pk,
 			'slug': self.slug,
 		})
 	
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_person_delete', None, {
+		    'pk': self.pk,
 			'slug': self.slug,
 		})
 
@@ -137,18 +143,21 @@ class Group(models.Model):
 	@permalink
 	def get_absolute_url(self):
 		return ('contacts_group_detail', None, {
+		    'pk': self.pk,
 			'slug': self.slug,
 		})
 	
 	@permalink
 	def get_update_url(self):
 		return ('contacts_group_update', None, {
+		    'pk': self.pk,
 			'slug': self.slug,
 		})
 	
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_group_delete', None, {
+		    'pk': self.pk,
 			'slug': self.slug,
 		})
 

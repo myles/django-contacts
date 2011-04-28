@@ -36,7 +36,7 @@ def list(request, page=1, template='contacts/person/list.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def detail(request, slug, template='contacts/person/detail.html'):
+def detail(request, pk, slug=None, template='contacts/person/detail.html'):
     """Detail of a person.
 
     :param template: Add a custom template.
@@ -44,7 +44,7 @@ def detail(request, slug, template='contacts/person/detail.html'):
 
 
     try:
-        person = Person.objects.get(slug__iexact=slug)
+        person = Person.objects.get(pk__iexact=pk)
     except Person.DoesNotExist:
         raise Http404
 
@@ -82,7 +82,7 @@ def create(request, template='contacts/person/create.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def update(request, slug, template='contacts/person/update.html'):
+def update(request, pk, slug=None, template='contacts/person/update.html'):
     """Update a person.
 
     :param template: A custom template.
@@ -94,7 +94,7 @@ def update(request, slug, template='contacts/person/update.html'):
         return HttpResponseForbidden()
 
     try:
-        person = Person.objects.get(slug__iexact=slug)
+        person = Person.objects.get(pk__iexact=pk)
     except person.DoesNotExist:
         raise Http404
 
@@ -142,7 +142,7 @@ def update(request, slug, template='contacts/person/update.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def delete(request, slug, template='contacts/person/delete.html'):
+def delete(request, pk, slug=None, template='contacts/person/delete.html'):
     """Delete a company.
 
     :param template: A custom template.
@@ -154,7 +154,7 @@ def delete(request, slug, template='contacts/person/delete.html'):
         return HttpResponseForbidden()
 
     try:
-        person = Person.objects.get(slug__iexact=slug)
+        person = Person.objects.get(pk__iexact=pk)
     except Person.DoesNotExist:
         raise Http404
 
