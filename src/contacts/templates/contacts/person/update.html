@@ -10,7 +10,7 @@
 {% block content %}
 	<form action="." method="post" accept-charset="utf-8">
         {% csrf_token %}
-		<p>{{ form.first_name }} {{ form.last_name }}</p>
+		<p>{{ form.first_name }} {{ form.last_name }} {{ form.suffix }}</p>
 		<p>{{ form.title }} {{ form.company }}</p>
 
 		{% include "contacts/_phone_number_form.html" %}
