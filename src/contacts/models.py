@@ -234,7 +234,7 @@ IM_SERVICE_CHOICES = (
 	('sametime', 'Sametime'),
 	('gadu-gadu', 'Gadu-Gadu'),
 	('google-talk', 'Google Talk'),
-  ('twitter', 'Twitter'),
+	('twitter', 'Twitter'),
 	('other', _('Other'))
 )
 
