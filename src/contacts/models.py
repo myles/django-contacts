@@ -195,6 +195,9 @@ class PhoneNumber(models.Model):
 
 LOCATION_CHOICES = (
 	('work', _('Work')),
+	('home', _('Home')),
+	('mobile', _('Mobile')),
+	('fax', _('Fax')),
 	('person', _('Personal')),
 	('other', _('Other'))
 )
@@ -231,6 +234,7 @@ IM_SERVICE_CHOICES = (
 	('sametime', 'Sametime'),
 	('gadu-gadu', 'Gadu-Gadu'),
 	('google-talk', 'Google Talk'),
+	('twitter', 'Twitter'),
 	('other', _('Other'))
 )
 
