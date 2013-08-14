@@ -1,4 +1,7 @@
-from django.conf.urls.defaults import *
+try:
+    from django.conf.urls import *
+except:
+    from django.conf.urls.defaults import *
 
 urlpatterns = patterns('contacts.views',
 	url(r'^companies/page/(?P<page>\d+)/$',

@@ -179,7 +179,7 @@ class PhoneNumber(models.Model):
 	content_object = generic.GenericForeignKey()
 	
 	phone_number = models.CharField(_('number'), max_length=50)
-	location = models.CharField(_('location'), max_length=6,
+	location = models.CharField(_('location'), max_length=128,
 		choices=PHONE_LOCATION_CHOICES, default='work')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
@@ -195,6 +195,9 @@ class PhoneNumber(models.Model):
 
 LOCATION_CHOICES = (
 	('work', _('Work')),
+	('home', _('Home')),
+	('mobile', _('Mobile')),
+	('fax', _('Fax')),
 	('person', _('Personal')),
 	('other', _('Other'))
 )
@@ -206,7 +209,7 @@ class EmailAddress(models.Model):
 	content_object = generic.GenericForeignKey()
 	
 	email_address = models.EmailField(_('email address'))
-	location = models.CharField(_('location'), max_length=6,
+	location = models.CharField(_('location'), max_length=128,
 		choices=LOCATION_CHOICES, default='work')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
@@ -231,6 +234,7 @@ IM_SERVICE_CHOICES = (
 	('sametime', 'Sametime'),
 	('gadu-gadu', 'Gadu-Gadu'),
 	('google-talk', 'Google Talk'),
+	('twitter', 'Twitter'),
 	('other', _('Other'))
 )
 
@@ -241,7 +245,7 @@ class InstantMessenger(models.Model):
 	content_object = generic.GenericForeignKey()
 	
 	im_account = models.CharField(_('im account'), max_length=100)
-	location = models.CharField(_('location'), max_length=6,
+	location = models.CharField(_('location'), max_length=128,
 		choices=LOCATION_CHOICES, default='work')
 	service = models.CharField(_('service'), max_length=11,
 		choices=IM_SERVICE_CHOICES, default='jabber')
@@ -264,7 +268,7 @@ class WebSite(models.Model):
 	content_object = generic.GenericForeignKey()
 
 	url = models.URLField(_('URL'))
-	location = models.CharField(_('location'), max_length=6,
+	location = models.CharField(_('location'), max_length=128,
 		choices=LOCATION_CHOICES, default='work')
 
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
@@ -292,7 +296,7 @@ class StreetAddress(models.Model):
 	province = models.CharField(_('province'), max_length=200, blank=True)
 	postal_code = models.CharField(_('postal code'), max_length=10, blank=True)
 	country = models.CharField(_('country'), max_length=100)
-	location = models.CharField(_('location'), max_length=6,
+	location = models.CharField(_('location'), max_length=128,
 		choices=LOCATION_CHOICES, default='work')
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
