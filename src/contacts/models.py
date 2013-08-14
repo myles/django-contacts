@@ -162,14 +162,29 @@ class Group(models.Model):
 			'slug': self.slug,
 		})
 
-PHONE_LOCATION_CHOICES = (
-	('work', _('Work')),
-	('mobile', _('Mobile')),
-	('fax', _('Fax')),
-	('pager', _('Pager')),
-	('home', _('Home')),
-	('other', _('Other')),
-)
+class Location(models.Model):
+	"""Location model."""
+	WEIGHT_CHOICES = [(i,i) for i in range(11)]
+	
+	name = models.CharField(_('name'), max_length=200)
+	slug = models.SlugField(_('slug'), max_length=50, unique=True)
+	
+	is_phone = models.BooleanField(_('is phone'), help_text="Only used for Phone", default=False)
+	is_street_address = models.BooleanField(_('is street address'), help_text="Only used for Street Address", default=False)
+	
+	weight = models.IntegerField(max_length=2, choices=WEIGHT_CHOICES, default=0)
+	
+	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
+	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+	
+	def __unicode__(self):
+		return u"%s" % (self.name)
+	
+	class Meta:
+		db_table = 'contacts_locations'
+		ordering = ('weight',)
+		verbose_name = _('location')
+		verbose_name_plural = _('locations')
 
 class PhoneNumber(models.Model):
 	"""Phone Number model."""
@@ -179,8 +194,7 @@ class PhoneNumber(models.Model):
 	content_object = generic.GenericForeignKey()
 	
 	phone_number = models.CharField(_('number'), max_length=50)
-	location = models.CharField(_('location'), max_length=128,
-		choices=PHONE_LOCATION_CHOICES, default='work')
+	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False})
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
@@ -193,15 +207,6 @@ class PhoneNumber(models.Model):
 		verbose_name = 'phone number'
 		verbose_name_plural = 'phone numbers'
 
-LOCATION_CHOICES = (
-	('work', _('Work')),
-	('home', _('Home')),
-	('mobile', _('Mobile')),
-	('fax', _('Fax')),
-	('person', _('Personal')),
-	('other', _('Other'))
-)
-
 class EmailAddress(models.Model):
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
@@ -209,8 +214,7 @@ class EmailAddress(models.Model):
 	content_object = generic.GenericForeignKey()
 	
 	email_address = models.EmailField(_('email address'))
-	location = models.CharField(_('location'), max_length=128,
-		choices=LOCATION_CHOICES, default='work')
+	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
@@ -246,8 +250,7 @@ class InstantMessenger(models.Model):
 	content_object = generic.GenericForeignKey()
 	
 	im_account = models.CharField(_('im account'), max_length=100)
-	location = models.CharField(_('location'), max_length=128,
-		choices=LOCATION_CHOICES, default='work')
+	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
 	service = models.CharField(_('service'), max_length=11,
 		choices=IM_SERVICE_CHOICES, default=OTHER)
 	
@@ -269,8 +272,7 @@ class WebSite(models.Model):
 	content_object = generic.GenericForeignKey()
 
 	url = models.URLField(_('URL'))
-	location = models.CharField(_('location'), max_length=128,
-		choices=LOCATION_CHOICES, default='work')
+	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
 
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
@@ -297,8 +299,7 @@ class StreetAddress(models.Model):
 	province = models.CharField(_('province'), max_length=200, blank=True)
 	postal_code = models.CharField(_('postal code'), max_length=10, blank=True)
 	country = models.CharField(_('country'), max_length=100)
-	location = models.CharField(_('location'), max_length=128,
-		choices=LOCATION_CHOICES, default='work')
+	location = models.ForeignKey(Location, limit_choices_to={'is_phone': False})
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
