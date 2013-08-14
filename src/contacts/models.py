@@ -7,6 +7,8 @@ from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericRelation
 
+from contacts.managers import SpecialDateManager
+
 class Company(models.Model):
 	"""Company model."""
 	name = models.CharField(_('name'), max_length=200)
@@ -324,6 +326,8 @@ class SpecialDate(models.Model):
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+	
+	objects = SpecialDateManager()
 	
 	def __unicode__(self):
 		return u"%s: %s" % (self.occasion, self.date)
