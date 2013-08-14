@@ -223,22 +223,23 @@ class EmailAddress(models.Model):
 		verbose_name = 'email address'
 		verbose_name_plural = 'email addresses'
 
-IM_SERVICE_CHOICES = (
-	('aim', 'AIM'),
-	('msn', 'MSN'),
-	('icq', 'ICQ'),
-	('jabber', 'Jabber'),
-	('yahoo', 'Yahoo'),
-	('skype', 'Skype'),
-	('qq', 'QQ'),
-	('sametime', 'Sametime'),
-	('gadu-gadu', 'Gadu-Gadu'),
-	('google-talk', 'Google Talk'),
-	('twitter', 'Twitter'),
-	('other', _('Other'))
-)
-
 class InstantMessenger(models.Model):
+	OTHER = 'other'
+	
+	IM_SERVICE_CHOICES = (
+		('aim', _('AIM')),
+		('msn', _('MSN')),
+		('icq', _('ICQ')),
+		('jabber', _('Jabber')),
+		('yahoo', _('Yahoo')),
+		('skype', _('Skype')),
+		('qq', _('QQ')),
+		('sametime', _('Sametime')),
+		('gadu-gadu', _('Gadu-Gadu')),
+		('google-talk', _('Google Talk')),
+		(OTHER, _('Other'))
+	)
+	
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
@@ -248,7 +249,7 @@ class InstantMessenger(models.Model):
 	location = models.CharField(_('location'), max_length=6,
 		choices=LOCATION_CHOICES, default='work')
 	service = models.CharField(_('service'), max_length=11,
-		choices=IM_SERVICE_CHOICES, default='jabber')
+		choices=IM_SERVICE_CHOICES, default=OTHER)
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)

@@ -19,3 +19,4 @@ INSTALLED_APPS = [
 	'contacts',
 ]
 ROOT_URLCONF = 'contacts.testurls'
+SECRET_KEY = 'test-secret-key'
