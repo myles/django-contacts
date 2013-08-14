@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.contrib.comments.models import Comment
 
-from contacts.models import Company, Person, Group, PhoneNumber, EmailAddress, InstantMessenger, WebSite, StreetAddress, SpecialDate
+from contacts.models import Company, Person, Group, PhoneNumber, EmailAddress, InstantMessenger, WebSite, StreetAddress, SpecialDate, Location
 
 class EmailAddressInline(generic.GenericTabularInline):
 	model = EmailAddress
@@ -66,6 +66,23 @@ class GroupAdmin(admin.ModelAdmin):
 	search_fields = ['^name', '^about',]
 	prepopulated_fields = {'slug': ('name',)}
 
+class LocationAdmin(admin.ModelAdmin):
+	list_display_links = ('name',)
+	list_display = ('name', 'date_modified')
+	ordering = ('weight', 'name')
+	search_fields = ['^name',]
+	prepopulated_fields = {'slug': ('name',)}
+	
+	fieldsets = (
+		(None, {
+			'fields': (('name', 'slug',),)
+		}),
+		('Advanced options', {
+			'fields': (('is_phone', 'is_street_address'),)
+		})
+	)
+
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Group, GroupAdmin)
+admin.site.register(Location, LocationAdmin)
