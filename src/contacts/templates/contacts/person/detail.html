@@ -6,6 +6,9 @@
 {% block content_title %}
 	<h2>
 		<span class="fn">{{ object }}</span>
+		{% if object.suffix %}
+		<span class="suffix">{{ object.suffix }}</span>
+		{% endif %}
 		{% if object.nickname %}
 		<span class="alt">(<span class="nickname">{{ object.nickname }}</span>)</span>
 		{% endif %}
