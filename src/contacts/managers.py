@@ -2,6 +2,17 @@ import datetime
 
 from django.db.models import Manager, Q
 
+
+class CompanyManager(Manager):
+	def get_query_set(self):
+		return super(CompanyManager, self).get_query_set().filter(is_company=True)
+		
+
+class PersonManager(Manager):
+	def get_query_set(self):
+		return super(PersonManager, self).get_query_set().filter(is_company=False)
+
+
 class SpecialDateManager(Manager):
 	
 	def get_dates_for_day(self, date=None):

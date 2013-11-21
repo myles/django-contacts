@@ -7,118 +7,138 @@ from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericRelation
 
-from contacts.managers import SpecialDateManager
+from contacts.managers import SpecialDateManager, CompanyManager, PersonManager
 
-class Company(models.Model):
-	"""Company model."""
-	name = models.CharField(_('name'), max_length=200)
-	nickname = models.CharField(_('nickname'), max_length=50, blank=True,
-		null=True)
+class Contact(models.Model):
+	nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
-	about = models.TextField(_('about'), blank=True, null=True)
-	logo = models.ImageField(_('photo'), upload_to='contacts/companies/', blank=True)	
+	is_company = models.BooleanField(_('is company'), help_text="Only used for Company", default=False)
 
-	phone_number = GenericRelation('PhoneNumber')
-	email_address = GenericRelation('EmailAddress')
-	instant_messenger = GenericRelation('InstantMessenger')
-	web_site = GenericRelation('WebSite')
-	street_address = GenericRelation('StreetAddress')
-	special_date = GenericRelation('SpecialDate')
-	note = GenericRelation(Comment, object_id_field='object_pk')
+	logo = models.ImageField(_('photo'), upload_to='contacts/contacts/', blank=True, null=True)
+	photo = models.ImageField(_('photo'), upload_to='contacts/contacts/', blank=True, null=True)
+
+	title = models.CharField(_('title'), max_length=200, blank=True)
+	company = models.ForeignKey('Contact', related_name='people', blank=True, null=True )
+	about = models.TextField(_('about'), blank=True)
+
+	user = models.OneToOneField(User, blank=True, null=True,
+		verbose_name=_('user'))
+
+	name = models.CharField(_('name'), max_length=200, blank=True, null=True)
+	first_name = models.CharField(_('first name'), max_length=100, blank=True, null=True)
+	last_name = models.CharField(_('last name'), max_length=200, blank=True, null=True)
+	middle_name = models.CharField(_('middle name'), max_length=200, blank=True, null=True)
+	prefix = models.CharField(_('prefix'), max_length=50, blank=True, null=True)
+	suffix = models.CharField(_('suffix'), max_length=50, blank=True, null=True)
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+
 	class Meta:
-		db_table = 'contacts_companies'
+		db_table = 'contacts_contacts'
+		verbose_name = _('contact')
+		verbose_name_plural = _('contacts')
+
+	@permalink
+	def get_absolute_url(self):
+		return ('contacts_contact_detail', None, {
+		    'pk': self.pk,
+			'slug': self.slug,
+		})
+
+	@permalink
+	def get_update_url(self):
+		return ('contacts_contact_update', None, {
+		    'pk': self.pk,
+			'slug': self.slug,
+		})
+
+	@permalink
+	def get_delete_url(self):
+		return ('contacts_contact_delete', None, {
+		    'pk': self.pk,
+			'slug': self.slug,
+		})
+
+
+class Company(Contact):
+	"""Company model."""
+	objects = CompanyManager()
+
+	class Meta:
+		proxy = True
 		ordering = ('name',)
-		verbose_name = _('company')
-		verbose_name_plural = _('companies')
-	
+
+	def __init__(self, *args, **kwargs):
+		# Call Contact's super and set is_company to True
+		super(Contact,self).__init__(*args,**kwargs)
+		self.is_company = True
+
 	def __unicode__(self):
 		return u"%s" % self.name
-	
+
 	@permalink
 	def get_absolute_url(self):
 		return ('contacts_company_detail', None, {
-		    'pk': self.pk,
+			'pk': self.pk,
 			'slug': self.slug,
 		})
-	
+    
 	@permalink
 	def get_update_url(self):
 		return ('contacts_company_update', None, {
-		    'pk': self.pk,
+			'pk': self.pk,
 			'slug': self.slug,
 		})
-	
+    
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_company_delete', None, {
-		    'pk': self.pk,
+			'pk': self.pk,
 			'slug': self.slug,
 		})
 
-class Person(models.Model):
+
+class Person(Contact):
 	"""Person model."""
-	first_name = models.CharField(_('first name'), max_length=100)
-	last_name = models.CharField(_('last name'), max_length=200)
-	middle_name = models.CharField(_('middle name'), max_length=200, blank=True, null=True)
-	suffix = models.CharField(_('suffix'), max_length=50, blank=True, null=True)
-	nickname = models.CharField(_('nickname'), max_length=100, blank=True)
-	slug = models.SlugField(_('slug'), max_length=50, unique=True)
-	title = models.CharField(_('title'), max_length=200, blank=True)
-	company = models.ForeignKey(Company, blank=True, null=True)
-	about = models.TextField(_('about'), blank=True)
-	photo = models.ImageField(_('photo'), upload_to='contacts/person/', blank=True)
-	
-	user = models.OneToOneField(User, blank=True, null=True,
-		verbose_name=_('user'))
-	
-	phone_number = GenericRelation('PhoneNumber')
-	email_address = GenericRelation('EmailAddress')
-	instant_messenger = GenericRelation('InstantMessenger')
-	web_site = GenericRelation('WebSite')
-	street_address = GenericRelation('StreetAddress')
-	special_date = GenericRelation('SpecialDate')
-	note = GenericRelation(Comment, object_id_field='object_pk')
-	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+	objects = PersonManager()
+
 	class Meta:
-		db_table = 'contacts_people'
+		proxy = True
 		ordering = ('last_name', 'first_name')
-		verbose_name = _('person')
-		verbose_name_plural = _('people')
-	
+
+	def __init__(self, *args, **kwargs):
+		# Call Contact's super
+		super(Contact,self).__init__(*args,**kwargs)
+
 	def __unicode__(self):
 		return self.fullname
-	
+
 	@property
 	def fullname(self):
-		return u"%s %s" % (self.first_name, self.last_name)
-	
+		return u"%s %s %s %s" % (self.first_name, self.middle_name, self.last_name, self.suffix)
+
 	@permalink
 	def get_absolute_url(self):
 		return ('contacts_person_detail', None, {
-		    'pk': self.pk,
+			'pk': self.pk,
 			'slug': self.slug,
 		})
-	
+    
 	@permalink
 	def get_update_url(self):
 		return ('contacts_person_update', None, {
-		    'pk': self.pk,
+			'pk': self.pk,
 			'slug': self.slug,
 		})
-	
+    
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_person_delete', None, {
-		    'pk': self.pk,
+			'pk': self.pk,
 			'slug': self.slug,
 		})
+
 
 class Group(models.Model):
 	"""Group model."""
@@ -190,17 +210,26 @@ class Location(models.Model):
 
 class PhoneNumber(models.Model):
 	"""Phone Number model."""
-	content_type = models.ForeignKey(ContentType,
-		limit_choices_to={'app_label': 'contacts'})
-	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
-	
+	contact = models.ForeignKey(Contact, related_name='phone_number',blank=True, null=True )
+
 	phone_number = models.CharField(_('number'), max_length=50)
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False})
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 	
+	def __init__(self, *args, **kwargs):
+		# If there is a content_object in the kwarguments, peel it off into
+		# a variable named content_object_value
+		if 'content_object' in kwargs:
+			content_object_value = kwargs['content_object']
+			del kwargs['content_object']
+
+		# Then run the normal init
+		super(PhoneNumber,self).__init__(*args,**kwargs)
+		if 'content_object_value' in locals():
+			self.contact = content_object_value
+        
 	def __unicode__(self):
 		return u"%s (%s)" % (self.phone_number, self.location)
 	
@@ -210,10 +239,7 @@ class PhoneNumber(models.Model):
 		verbose_name_plural = 'phone numbers'
 
 class EmailAddress(models.Model):
-	content_type = models.ForeignKey(ContentType,
-		limit_choices_to={'app_label': 'contacts'})
-	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	contact = models.ForeignKey(Contact, related_name='email_address',blank=True, null=True )
 	
 	email_address = models.EmailField(_('email address'))
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
@@ -221,6 +247,18 @@ class EmailAddress(models.Model):
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 	
+        def __init__(self, *args, **kwargs):
+                # If there is a content_object in the kwarguments, peel it off into
+                # a variable named content_object_value
+                if 'content_object' in kwargs:
+                        content_object_value = kwargs['content_object']
+                        del kwargs['content_object']
+
+                # Then run the normal init
+                super(EmailAddress,self).__init__(*args,**kwargs)
+                if 'content_object_value' in locals():
+                        self.contact = content_object_value
+
 	def __unicode__(self):
 		return u"%s (%s)" % (self.email_address, self.location)
 	
@@ -246,10 +284,7 @@ class InstantMessenger(models.Model):
 		(OTHER, _('Other'))
 	)
 	
-	content_type = models.ForeignKey(ContentType,
-		limit_choices_to={'app_label': 'contacts'})
-	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	contact = models.ForeignKey(Contact, related_name='instant_messenger',blank=True, null=True )
 	
 	im_account = models.CharField(_('im account'), max_length=100)
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
@@ -259,6 +294,18 @@ class InstantMessenger(models.Model):
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 	
+        def __init__(self, *args, **kwargs):
+                # If there is a content_object in the kwarguments, peel it off into
+                # a variable named content_object_value
+                if 'content_object' in kwargs:
+                        content_object_value = kwargs['content_object']
+                        del kwargs['content_object']
+
+                # Then run the normal init
+                super(InstantMessenger,self).__init__(*args,**kwargs)
+                if 'content_object_value' in locals():
+                        self.contact = content_object_value
+
 	def __unicode__(self):
 		return u"%s (%s)" % (self.im_account, self.location)
 	
@@ -268,10 +315,7 @@ class InstantMessenger(models.Model):
 		verbose_name_plural = 'instant messengers'
 
 class WebSite(models.Model):
-	content_type = models.ForeignKey(ContentType,
-		limit_choices_to={'app_label': 'contacts'})
-	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	contact = models.ForeignKey(Contact, related_name='web_site', blank=True, null=True )
 
 	url = models.URLField(_('URL'))
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
@@ -279,6 +323,18 @@ class WebSite(models.Model):
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 	
+        def __init__(self, *args, **kwargs):
+                # If there is a content_object in the kwarguments, peel it off into
+                # a variable named content_object_value
+                if 'content_object' in kwargs:
+                        content_object_value = kwargs['content_object']
+                        del kwargs['content_object']
+
+                # Then run the normal init
+                super(WebSite,self).__init__(*args,**kwargs)
+                if 'content_object_value' in locals():
+                        self.contact = content_object_value
+
 	def __unicode__(self):
 		return u"%s (%s)" % (self.url, self.location)
 	
@@ -291,11 +347,8 @@ class WebSite(models.Model):
 		return u"%s?web_site=%s" % (self.content_object.get_absolute_url(), self.pk)
 
 class StreetAddress(models.Model):
-	content_type = models.ForeignKey(ContentType,
-		limit_choices_to={'app_label': 'contacts'})
-	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
-	
+	contact = models.ForeignKey(Contact, related_name='street_address',blank=True, null=True )
+		
 	street = models.TextField(_('street'), blank=True)
 	city = models.CharField(_('city'), max_length=200, blank=True)
 	province = models.CharField(_('province'), max_length=200, blank=True)
@@ -306,6 +359,18 @@ class StreetAddress(models.Model):
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 	
+        def __init__(self, *args, **kwargs):
+                # If there is a content_object in the kwarguments, peel it off into
+                # a variable named content_object_value
+                if 'content_object' in kwargs:
+                        content_object_value = kwargs['content_object']
+                        del kwargs['content_object']
+
+                # Then run the normal init
+                super(StreetAddress,self).__init__(*args,**kwargs)
+                if 'content_object_value' in locals():
+                        self.contact = content_object_value
+
 	def __unicode__(self):
 		return u"%s (%s)" % (self.city, self.location)
 	
@@ -315,10 +380,9 @@ class StreetAddress(models.Model):
 		verbose_name_plural = _('street addresses')
 
 class SpecialDate(models.Model):
-	content_type = models.ForeignKey(ContentType,
-		limit_choices_to={'app_label': 'contacts'})
-	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	contact = models.ForeignKey(Contact, related_name="special_date",blank=True, null=True )
+	# object_id = models.IntegerField(db_index=True)
+	# content_object = generic.GenericForeignKey()
 	
 	occasion = models.TextField(_('occasion'), max_length=200)
 	date = models.DateField(_('date'))
@@ -329,6 +393,18 @@ class SpecialDate(models.Model):
 	
 	objects = SpecialDateManager()
 	
+        def __init__(self, *args, **kwargs):
+                # If there is a content_object in the kwarguments, peel it off into
+                # a variable named content_object_value
+                if 'content_object' in kwargs:
+                        content_object_value = kwargs['content_object']
+                        del kwargs['content_object']
+
+                # Then run the normal init
+                super(SpecialDate,self).__init__(*args,**kwargs)
+                if 'content_object_value' in locals():
+                        self.contact = content_object_value
+
 	def __unicode__(self):
 		return u"%s: %s" % (self.occasion, self.date)
 	
