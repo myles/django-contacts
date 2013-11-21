@@ -10,53 +10,67 @@ from django.contrib.contenttypes.generic import GenericRelation
 from contacts.managers import SpecialDateManager, CompanyManager, PersonManager
 
 class Contact(models.Model):
-	nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
-	slug = models.SlugField(_('slug'), max_length=50, unique=True)
-	is_company = models.BooleanField(_('is company'), help_text="Only used for Company", default=False)
-
+        """ Unique attributes of former Company model."""
+	name = models.CharField(_('name'), max_length=200, blank=True, null=True)
 	logo = models.ImageField(_('photo'), upload_to='contacts/contacts/', blank=True, null=True)
+
+        """ Unique attributes of former Person model."""
+	first_name  = models.CharField(_('first name'), max_length=100, blank=True, null=True)
+	last_name   = models.CharField(_('last name'), max_length=200, blank=True, null=True)
+	middle_name = models.CharField(_('middle name'), max_length=200, blank=True, null=True)
+	suffix      = models.CharField(_('suffix'), max_length=50, blank=True, null=True)
+	title       = models.CharField(_('title'), max_length=200, blank=True)
+	company     = models.ForeignKey('Contact', related_name='people', blank=True, null=True )
+	user        = models.OneToOneField(User, blank=True, null=True,
+                                           verbose_name=_('user'))
 	photo = models.ImageField(_('photo'), upload_to='contacts/contacts/', blank=True, null=True)
 
-	title = models.CharField(_('title'), max_length=200, blank=True)
-	company = models.ForeignKey('Contact', related_name='people', blank=True, null=True )
-	about = models.TextField(_('about'), blank=True)
+        """ Common attributes of former Person and Company models."""
+	nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
+	slug     = models.SlugField(_('slug'), max_length=50, unique=True)
+	about    = models.TextField(_('about'), blank=True)
 
-	user = models.OneToOneField(User, blank=True, null=True,
-		verbose_name=_('user'))
-
-	name = models.CharField(_('name'), max_length=200, blank=True, null=True)
-	first_name = models.CharField(_('first name'), max_length=100, blank=True, null=True)
-	last_name = models.CharField(_('last name'), max_length=200, blank=True, null=True)
-	middle_name = models.CharField(_('middle name'), max_length=200, blank=True, null=True)
-	prefix = models.CharField(_('prefix'), max_length=50, blank=True, null=True)
-	suffix = models.CharField(_('suffix'), max_length=50, blank=True, null=True)
-	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
+	date_added    = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
+        """ New attributes of combined model. """
+	is_company = models.BooleanField(_('is company'), help_text="Only used for Company", default=False)
+	prefix     = models.CharField(_('prefix'), max_length=50, blank=True, null=True)
 
 	class Meta:
 		db_table = 'contacts_contacts'
+                ordering = ('slug',)
 		verbose_name = _('contact')
 		verbose_name_plural = _('contacts')
+
+        def __unicode__(self):
+                if self.is_company:
+                        return u"%s" % self.name
+                else:
+                        return self.fullname
+
+        @property
+        def fullname(self):
+                return u"%s %s" % (self.first_name, self.last_name)
 
 	@permalink
 	def get_absolute_url(self):
 		return ('contacts_contact_detail', None, {
-		    'pk': self.pk,
+                        'pk': self.pk,
 			'slug': self.slug,
 		})
 
 	@permalink
 	def get_update_url(self):
 		return ('contacts_contact_update', None, {
-		    'pk': self.pk,
-			'slug': self.slug,
+                        'pk': self.pk,
+                        'slug': self.slug,
 		})
 
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_contact_delete', None, {
-		    'pk': self.pk,
+                        'pk': self.pk,
 			'slug': self.slug,
 		})
 
@@ -68,14 +82,13 @@ class Company(Contact):
 	class Meta:
 		proxy = True
 		ordering = ('name',)
+                verbose_name = _('company')
+                verbose_name_plural = _('companies')
 
 	def __init__(self, *args, **kwargs):
 		# Call Contact's super and set is_company to True
 		super(Contact,self).__init__(*args,**kwargs)
 		self.is_company = True
-
-	def __unicode__(self):
-		return u"%s" % self.name
 
 	@permalink
 	def get_absolute_url(self):
@@ -106,13 +119,12 @@ class Person(Contact):
 	class Meta:
 		proxy = True
 		ordering = ('last_name', 'first_name')
+                verbose_name = _('person')
+                verbose_name_plural = _('people')
 
 	def __init__(self, *args, **kwargs):
 		# Call Contact's super
 		super(Contact,self).__init__(*args,**kwargs)
-
-	def __unicode__(self):
-		return self.fullname
 
 	@property
 	def fullname(self):
@@ -210,7 +222,7 @@ class Location(models.Model):
 
 class PhoneNumber(models.Model):
 	"""Phone Number model."""
-	contact = models.ForeignKey(Contact, related_name='phone_number',blank=True, null=True )
+	contact = models.ForeignKey(Contact, related_name='phone_number')
 
 	phone_number = models.CharField(_('number'), max_length=50)
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False})
@@ -239,7 +251,7 @@ class PhoneNumber(models.Model):
 		verbose_name_plural = 'phone numbers'
 
 class EmailAddress(models.Model):
-	contact = models.ForeignKey(Contact, related_name='email_address',blank=True, null=True )
+	contact = models.ForeignKey(Contact, related_name='email_address')
 	
 	email_address = models.EmailField(_('email address'))
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
@@ -284,7 +296,7 @@ class InstantMessenger(models.Model):
 		(OTHER, _('Other'))
 	)
 	
-	contact = models.ForeignKey(Contact, related_name='instant_messenger',blank=True, null=True )
+	contact = models.ForeignKey(Contact, related_name='instant_messenger')
 	
 	im_account = models.CharField(_('im account'), max_length=100)
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
@@ -315,7 +327,7 @@ class InstantMessenger(models.Model):
 		verbose_name_plural = 'instant messengers'
 
 class WebSite(models.Model):
-	contact = models.ForeignKey(Contact, related_name='web_site', blank=True, null=True )
+	contact = models.ForeignKey(Contact, related_name='web_site')
 
 	url = models.URLField(_('URL'))
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
@@ -347,7 +359,7 @@ class WebSite(models.Model):
 		return u"%s?web_site=%s" % (self.content_object.get_absolute_url(), self.pk)
 
 class StreetAddress(models.Model):
-	contact = models.ForeignKey(Contact, related_name='street_address',blank=True, null=True )
+	contact = models.ForeignKey(Contact, related_name='street_address')
 		
 	street = models.TextField(_('street'), blank=True)
 	city = models.CharField(_('city'), max_length=200, blank=True)
@@ -380,7 +392,7 @@ class StreetAddress(models.Model):
 		verbose_name_plural = _('street addresses')
 
 class SpecialDate(models.Model):
-	contact = models.ForeignKey(Contact, related_name="special_date",blank=True, null=True )
+	contact = models.ForeignKey(Contact, related_name="special_date")
 	# object_id = models.IntegerField(db_index=True)
 	# content_object = generic.GenericForeignKey()
 	
