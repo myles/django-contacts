@@ -6,7 +6,7 @@ class SpecialDateManager(Manager):
 	
 	def get_dates_for_day(self, date=None):
 		"""
-		Return the list of speical days for a given day.
+		Return the list of special dates for a given day.
 		"""
 		
 		if not date:
@@ -21,7 +21,7 @@ class SpecialDateManager(Manager):
 	
 	def get_dates_for_month(self, date=None):
 		"""
-		Return the list of speical days for a given month.
+		Return the list of special dates for a given month.
 		"""
 		
 		if not date:
@@ -36,7 +36,7 @@ class SpecialDateManager(Manager):
 	
 	def get_dates_for_year(self, date=None):
 		"""
-		Return the list of speical days for a given year.
+		Return the list of special dates for a given year.
 		"""
 		
 		if not date:
