@@ -1,6 +1,8 @@
 Django Contacts
 ===============
 
+[ ![Codeship Status for CaseRails/django-contacts](https://www.codeship.io/projects/61563d40-5d64-0131-692d-2a0738b6ecf1/status?branch=master)](https://www.codeship.io/projects/11982)
+
 An Address Book for keeping People on Companies.
 
 Requirements
