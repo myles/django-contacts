@@ -1,5 +1,4 @@
 import os
-
 from setuptools import setup, find_packages
 
 def read(fname):
@@ -7,6 +6,7 @@ def read(fname):
 
 setup(
 	name = 'django-contacts',
+        zip_safe=False,
 	version = '0.5',
 	url = 'http://github.com/asgardproject/django-contacts',
 	license = 'BSD License',
