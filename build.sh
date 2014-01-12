@@ -1,3 +1,5 @@
+set -e
+
 echo "Installing Build Requirements"
 curl https://raw2.github.com/CaseRails/ci_scripts/master/ci_requirements.txt >> requirements.txt
 curl -O https://raw2.github.com/CaseRails/ci_scripts/master/build_artifacts.py
