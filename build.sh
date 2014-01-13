@@ -10,3 +10,4 @@ curl -O https://raw2.github.com/CaseRails/ci_scripts/master/retrieve.py
 sort -u requirements.txt > sorted_requirements.txt
 pip install -r sorted_requirements.txt
 python setup.py bdist_wheel
+python setup.py bdist_egg
