@@ -20,7 +20,9 @@ $PIP install ci_scripts
 # End installation of ci_scripts
 #
 python setup.py clean
-python setup.py bdist_wheel
-python setup.py bdist_egg
-cp dist/*.egg $PIP_DOWNLOAD_CACHE
-cp dist/*.whl $PIP_DOWNLOAD_CACHE
+#python setup.py bdist_wheel
+#python setup.py bdist_egg
+python setup.py sdist
+#cp dist/*.egg $PIP_DOWNLOAD_CACHE
+#cp dist/*.whl $PIP_DOWNLOAD_CACHE
+cp dist/* $PIP_DOWNLOAD_CACHE
