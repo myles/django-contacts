@@ -1,5 +1,14 @@
 set -xe
 #
+# Check if PACKAGE_NAME is set, if not, load it from the file PACKAGE_NAME
+#
+if [ -z "$PACKAGE_NAME" ]
+    then
+    echo "Setting PACKAGE_NAME from file."
+    export PACKAGE_NAME=`cat PACKAGE_NAME`
+fi
+
+#
 # Build and install ci_scripts
 #
 mkdir -p ~/.pip_cache
