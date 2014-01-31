@@ -1,13 +1,13 @@
 import os
-
 from setuptools import setup, find_packages
 
 def read(fname):
 	return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-	name = 'django-contacts',
-	version = '0.5',
+	name = 'contacts',
+        zip_safe=False,
+	version = '2.5.0',
 	url = 'http://github.com/asgardproject/django-contacts',
 	license = 'BSD License',
 	description = 'A Django address book application.',
