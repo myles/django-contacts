@@ -9,6 +9,20 @@ from django.contrib.contenttypes.generic import GenericRelation
 
 from contacts.managers import SpecialDateManager, CompanyManager, PersonManager
 
+
+
+def get_primary_related_object(contact,related_object_name):
+        """Determine and return the 'primary' related object."""
+        related_object_manager = contact.__getattribute__(related_object_name)
+        try: return related_object_manager.get(location__name="Work")
+        except: pass
+        try: return related_object_manager.get(location__name="Office")
+        except: pass
+        try: return related_object_manager.all()[0]
+        except: pass
+        return None
+
+
 class Contact(models.Model):
         """ Unique attributes of former Company model."""
 	name = models.CharField(_('name'), max_length=200, blank=True, null=True)
@@ -74,6 +88,22 @@ class Contact(models.Model):
 			'slug': self.slug,
 		})
 
+        def primary_email_address(self):
+                """Determine and return the 'primary' email address"""
+                return get_primary_related_object(self,"email_address")
+
+        def primary_phone_number(self):
+                """Determine and return the 'primary' phone number"""
+                return get_primary_related_object(self,"phone_number")
+
+        def primary_street_address(self):
+                """Determine and return the 'primary' street address"""
+                return get_primary_related_object(self,"street_address")
+
+        def primary_website(self):
+                """Determine and return the 'primary' website"""
+                return get_primary_related_object(self,"web_site")
+
 
 class Company(Contact):
 	"""Company model."""
@@ -96,14 +126,14 @@ class Company(Contact):
 			'pk': self.pk,
 			'slug': self.slug,
 		})
-    
+
 	@permalink
 	def get_update_url(self):
 		return ('contacts_company_update', None, {
 			'pk': self.pk,
 			'slug': self.slug,
 		})
-    
+
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_company_delete', None, {
@@ -136,14 +166,14 @@ class Person(Contact):
 			'pk': self.pk,
 			'slug': self.slug,
 		})
-    
+
 	@permalink
 	def get_update_url(self):
 		return ('contacts_person_update', None, {
 			'pk': self.pk,
 			'slug': self.slug,
 		})
-    
+
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_person_delete', None, {
@@ -157,38 +187,38 @@ class Group(models.Model):
 	name = models.CharField(_('name'), max_length=200)
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
 	about = models.TextField(_('about'), blank=True)
-	
+
 	people = models.ManyToManyField(Person, verbose_name='people', blank=True,
 		null=True)
 	companies = models.ManyToManyField(Company, verbose_name='companies',
 		blank=True, null=True)
-	
+
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+
 	class Meta:
 		db_table = 'contacts_groups'
 		ordering = ('name',)
 		verbose_name = _('group')
 		verbose_name_plural = _('groups')
-	
+
 	def __unicode__(self):
 		return u"%s" % self.name
-	
+
 	@permalink
 	def get_absolute_url(self):
 		return ('contacts_group_detail', None, {
 		    'pk': self.pk,
 			'slug': self.slug,
 		})
-	
+
 	@permalink
 	def get_update_url(self):
 		return ('contacts_group_update', None, {
 		    'pk': self.pk,
 			'slug': self.slug,
 		})
-	
+
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_group_delete', None, {
@@ -199,21 +229,21 @@ class Group(models.Model):
 class Location(models.Model):
 	"""Location model."""
 	WEIGHT_CHOICES = [(i,i) for i in range(11)]
-	
+
 	name = models.CharField(_('name'), max_length=200)
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
-	
+
 	is_phone = models.BooleanField(_('is phone'), help_text="Only used for Phone", default=False)
 	is_street_address = models.BooleanField(_('is street address'), help_text="Only used for Street Address", default=False)
-	
+
 	weight = models.IntegerField(max_length=2, choices=WEIGHT_CHOICES, default=0)
-	
+
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+
 	def __unicode__(self):
 		return u"%s" % (self.name)
-	
+
 	class Meta:
 		db_table = 'contacts_locations'
 		ordering = ('weight',)
@@ -226,10 +256,10 @@ class PhoneNumber(models.Model):
 
 	phone_number = models.CharField(_('number'), max_length=50)
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False})
-	
+
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+
 	def __init__(self, *args, **kwargs):
 		# If there is a content_object in the kwarguments, peel it off into
 		# a variable named content_object_value
@@ -241,10 +271,10 @@ class PhoneNumber(models.Model):
 		super(PhoneNumber,self).__init__(*args,**kwargs)
 		if 'content_object_value' in locals():
 			self.contact = content_object_value
-        
+
 	def __unicode__(self):
 		return u"%s (%s)" % (self.phone_number, self.location)
-	
+
 	class Meta:
 		db_table = 'contacts_phone_numbers'
 		verbose_name = 'phone number'
@@ -252,13 +282,13 @@ class PhoneNumber(models.Model):
 
 class EmailAddress(models.Model):
 	contact = models.ForeignKey(Contact, related_name='email_address')
-	
+
 	email_address = models.EmailField(_('email address'))
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
-	
+
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+
         def __init__(self, *args, **kwargs):
                 # If there is a content_object in the kwarguments, peel it off into
                 # a variable named content_object_value
@@ -273,7 +303,7 @@ class EmailAddress(models.Model):
 
 	def __unicode__(self):
 		return u"%s (%s)" % (self.email_address, self.location)
-	
+
 	class Meta:
 		db_table = 'contacts_email_addresses'
 		verbose_name = 'email address'
@@ -281,7 +311,7 @@ class EmailAddress(models.Model):
 
 class InstantMessenger(models.Model):
 	OTHER = 'other'
-	
+
 	IM_SERVICE_CHOICES = (
 		('aim', _('AIM')),
 		('msn', _('MSN')),
@@ -295,17 +325,17 @@ class InstantMessenger(models.Model):
 		('google-talk', _('Google Talk')),
 		(OTHER, _('Other'))
 	)
-	
+
 	contact = models.ForeignKey(Contact, related_name='instant_messenger')
-	
+
 	im_account = models.CharField(_('im account'), max_length=100)
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
 	service = models.CharField(_('service'), max_length=11,
 		choices=IM_SERVICE_CHOICES, default=OTHER)
-	
+
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+
         def __init__(self, *args, **kwargs):
                 # If there is a content_object in the kwarguments, peel it off into
                 # a variable named content_object_value
@@ -320,7 +350,7 @@ class InstantMessenger(models.Model):
 
 	def __unicode__(self):
 		return u"%s (%s)" % (self.im_account, self.location)
-	
+
 	class Meta:
 		db_table = 'contacts_instant_messengers'
 		verbose_name = 'instant messenger'
@@ -334,7 +364,7 @@ class WebSite(models.Model):
 
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+
         def __init__(self, *args, **kwargs):
                 # If there is a content_object in the kwarguments, peel it off into
                 # a variable named content_object_value
@@ -349,28 +379,28 @@ class WebSite(models.Model):
 
 	def __unicode__(self):
 		return u"%s (%s)" % (self.url, self.location)
-	
+
 	class Meta:
 		db_table = 'contacts_web_sites'
 		verbose_name = _('web site')
 		verbose_name_plural = _('web sites')
-	
+
 	def get_absolute_url(self):
 		return u"%s?web_site=%s" % (self.content_object.get_absolute_url(), self.pk)
 
 class StreetAddress(models.Model):
 	contact = models.ForeignKey(Contact, related_name='street_address')
-		
+
 	street = models.TextField(_('street'), blank=True)
 	city = models.CharField(_('city'), max_length=200, blank=True)
 	province = models.CharField(_('province'), max_length=200, blank=True)
 	postal_code = models.CharField(_('postal code'), max_length=10, blank=True)
 	country = models.CharField(_('country'), max_length=100)
 	location = models.ForeignKey(Location, limit_choices_to={'is_phone': False})
-	
+
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+
         def __init__(self, *args, **kwargs):
                 # If there is a content_object in the kwarguments, peel it off into
                 # a variable named content_object_value
@@ -385,7 +415,7 @@ class StreetAddress(models.Model):
 
 	def __unicode__(self):
 		return u"%s (%s)" % (self.city, self.location)
-	
+
 	class Meta:
 		db_table = 'contacts_street_addresses'
 		verbose_name = _('street address')
@@ -395,16 +425,16 @@ class SpecialDate(models.Model):
 	contact = models.ForeignKey(Contact, related_name="special_date")
 	# object_id = models.IntegerField(db_index=True)
 	# content_object = generic.GenericForeignKey()
-	
+
 	occasion = models.TextField(_('occasion'), max_length=200)
 	date = models.DateField(_('date'))
 	every_year = models.BooleanField(_('every year'), default=True)
-	
+
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+
 	objects = SpecialDateManager()
-	
+
         def __init__(self, *args, **kwargs):
                 # If there is a content_object in the kwarguments, peel it off into
                 # a variable named content_object_value
@@ -419,7 +449,7 @@ class SpecialDate(models.Model):
 
 	def __unicode__(self):
 		return u"%s: %s" % (self.occasion, self.date)
-	
+
 	class Meta:
 		db_table = 'contacts_special_dates'
 		verbose_name = _('special date')
