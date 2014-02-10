@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from contacts.models import Group
