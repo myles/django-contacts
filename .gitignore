@@ -13,3 +13,5 @@ src/*.egg-info
 build/
 src/contacts/locale/*/LC_MESSAGES/*.mo
 
+/.project
+/.pydevproject

@@ -11,6 +11,7 @@ Requirements
 
  * django.contrib.auth
  * django.contrib.contenttypes
+ * django.contrib.comments
 
 Thanks
 ------
