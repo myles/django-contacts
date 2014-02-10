@@ -30,9 +30,16 @@ def list(request, page=1, template='contacts/person/list.html'):
         'has_other_pages': people.has_other_pages(),
         'start_index': people.start_index(),
         'end_index': people.end_index(),
-        'previous_page_number': people.previous_page_number(),
-        'next_page_number': people.next_page_number(),
     }
+
+    try:
+        kwvars['previous_page_number'] = people.previous_page_number()
+    except (EmptyPage, InvalidPage):
+        kwvars['previous_page_number'] = None
+    try:
+        kwvars['next_page_number'] = people.next_page_number()
+    except (EmptyPage, InvalidPage):
+        kwvars['next_page_number'] = None
 
     return render_to_response(template, kwvars, RequestContext(request))
 
