@@ -58,14 +58,14 @@ class Contact(models.Model):
 		verbose_name_plural = _('contacts')
 
         def __unicode__(self):
-                if self.is_company:
-                        return u"%s" % self.name
-                else:
-                        return self.fullname
+                return self.fullname
 
         @property
         def fullname(self):
-                return u"%s %s" % (self.first_name, self.last_name)
+                if self.is_company:
+                        return u"%s" % self.name
+                else:
+                        return u"%s %s" % (self.first_name,self.last_name)
 
 	@permalink
 	def get_absolute_url(self):
