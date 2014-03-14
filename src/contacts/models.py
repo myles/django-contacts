@@ -392,6 +392,7 @@ class StreetAddress(models.Model):
 	contact = models.ForeignKey(Contact, related_name='street_address')
 
 	street = models.TextField(_('street'), blank=True)
+	street2 = models.TextField(_('street2'), blank=True)
 	city = models.CharField(_('city'), max_length=200, blank=True)
 	province = models.CharField(_('province'), max_length=200, blank=True)
 	postal_code = models.CharField(_('postal code'), max_length=10, blank=True)
