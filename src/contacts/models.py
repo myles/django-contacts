@@ -6,7 +6,6 @@ from django.utils.translation import ugettext as _
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericRelation
-
 from contacts.managers import SpecialDateManager, CompanyManager, PersonManager
 
 
@@ -42,7 +41,7 @@ class Contact(models.Model):
 
         """ Common attributes of former Person and Company models."""
 	nickname = models.CharField(_('nickname'), max_length=50, blank=True, null=True)
-	slug     = models.SlugField(_('slug'), max_length=50, unique=True)
+	slug     = models.SlugField(_('slug'), blank=True, max_length=50)
 	about    = models.TextField(_('about'), blank=True)
 
 	date_added    = models.DateTimeField(_('date added'), auto_now_add=True)
@@ -54,7 +53,7 @@ class Contact(models.Model):
 
 	class Meta:
 		db_table = 'contacts_contacts'
-                ordering = ('slug',)
+                #ordering = ('slug',)
 		verbose_name = _('contact')
 		verbose_name_plural = _('contacts')
 
@@ -72,21 +71,21 @@ class Contact(models.Model):
 	def get_absolute_url(self):
 		return ('contacts_contact_detail', None, {
                         'pk': self.pk,
-			'slug': self.slug,
+			#'slug': self.slug,
 		})
 
 	@permalink
 	def get_update_url(self):
 		return ('contacts_contact_update', None, {
                         'pk': self.pk,
-                        'slug': self.slug,
+                        #'slug': self.slug,
 		})
 
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_contact_delete', None, {
                         'pk': self.pk,
-			'slug': self.slug,
+			#'slug': self.slug,
 		})
 
         def primary_email_address(self):
@@ -125,21 +124,21 @@ class Company(Contact):
 	def get_absolute_url(self):
 		return ('contacts_company_detail', None, {
 			'pk': self.pk,
-			'slug': self.slug,
+			#'slug': self.slug,
 		})
 
 	@permalink
 	def get_update_url(self):
 		return ('contacts_company_update', None, {
 			'pk': self.pk,
-			'slug': self.slug,
+			#'slug': self.slug,
 		})
 
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_company_delete', None, {
 			'pk': self.pk,
-			'slug': self.slug,
+			#'slug': self.slug,
 		})
 
 
@@ -165,28 +164,28 @@ class Person(Contact):
 	def get_absolute_url(self):
 		return ('contacts_person_detail', None, {
 			'pk': self.pk,
-			'slug': self.slug,
+			#'slug': self.slug,
 		})
 
 	@permalink
 	def get_update_url(self):
 		return ('contacts_person_update', None, {
 			'pk': self.pk,
-			'slug': self.slug,
+			#'slug': self.slug,
 		})
 
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_person_delete', None, {
 			'pk': self.pk,
-			'slug': self.slug,
+			#'slug': self.slug,
 		})
 
 
 class Group(models.Model):
 	"""Group model."""
 	name = models.CharField(_('name'), max_length=200)
-	slug = models.SlugField(_('slug'), max_length=50, unique=True)
+	slug = models.SlugField(_('slug'), blank=True,max_length=50)
 	about = models.TextField(_('about'), blank=True)
 
 	people = models.ManyToManyField(Person, verbose_name='people', blank=True,
@@ -209,22 +208,22 @@ class Group(models.Model):
 	@permalink
 	def get_absolute_url(self):
 		return ('contacts_group_detail', None, {
-		    'pk': self.pk,
-			'slug': self.slug,
-		})
+                        'pk': self.pk,
+			#'slug': self.slug,
+                })
 
 	@permalink
 	def get_update_url(self):
 		return ('contacts_group_update', None, {
-		    'pk': self.pk,
-			'slug': self.slug,
+                        'pk': self.pk,
+			#'slug': self.slug,
 		})
 
 	@permalink
 	def get_delete_url(self):
 		return ('contacts_group_delete', None, {
-		    'pk': self.pk,
-			'slug': self.slug,
+                        'pk': self.pk,
+			#'slug': self.slug,
 		})
 
 class Location(models.Model):
@@ -232,7 +231,7 @@ class Location(models.Model):
 	WEIGHT_CHOICES = [(i,i) for i in range(11)]
 
 	name = models.CharField(_('name'), max_length=200)
-	slug = models.SlugField(_('slug'), max_length=50, unique=True)
+	slug = models.SlugField(_('slug'), blank=True, max_length=50)
 
 	is_phone = models.BooleanField(_('is phone'), help_text="Only used for Phone", default=False)
 	is_street_address = models.BooleanField(_('is street address'), help_text="Only used for Street Address", default=False)
@@ -393,6 +392,7 @@ class StreetAddress(models.Model):
 	contact = models.ForeignKey(Contact, related_name='street_address')
 
 	street = models.TextField(_('street'), blank=True)
+	street2 = models.TextField(_('street2'), blank=True)
 	city = models.CharField(_('city'), max_length=200, blank=True)
 	province = models.CharField(_('province'), max_length=200, blank=True)
 	postal_code = models.CharField(_('postal code'), max_length=10, blank=True)
