@@ -14,11 +14,12 @@ from contacts.managers import SpecialDateManager, CompanyManager, PersonManager
 def get_primary_related_object(contact,related_object_name):
         """Determine and return the 'primary' related object."""
         related_object_manager = contact.__getattribute__(related_object_name)
-        try: return related_object_manager.get(location__name="Work")
+        queryset = related_object_manager.exclude(location__name="Fax")
+        try: return queryset.get(location__name="Work")
         except: pass
-        try: return related_object_manager.get(location__name="Office")
+        try: return queryset.get(location__name="Office")
         except: pass
-        try: return related_object_manager.all()[0]
+        try: return queryset[0]
         except: pass
         return None
 
