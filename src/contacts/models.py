@@ -125,10 +125,9 @@ class Group(models.Model):
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
 	about = models.TextField(_('about'), blank=True)
 	
-	people = models.ManyToManyField(Person, verbose_name='people', blank=True,
-		null=True)
+	people = models.ManyToManyField(Person, verbose_name='people', blank=True)
 	companies = models.ManyToManyField(Company, verbose_name='companies',
-		blank=True, null=True)
+		blank=True)
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
@@ -173,7 +172,7 @@ class Location(models.Model):
 	is_phone = models.BooleanField(_('is phone'), help_text="Only used for Phone", default=False)
 	is_street_address = models.BooleanField(_('is street address'), help_text="Only used for Street Address", default=False)
 	
-	weight = models.IntegerField(max_length=2, choices=WEIGHT_CHOICES, default=0)
+	weight = models.IntegerField(choices=WEIGHT_CHOICES, default=0)
 	
 	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
