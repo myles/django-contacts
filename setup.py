@@ -8,19 +8,20 @@ def read(fname):
 setup(
 	name = 'django-contacts',
 	version = '0.5',
-	url = 'http://github.com/asgardproject/django-contacts',
+	url = 'http://github.com/myles/django-contacts',
 	license = 'BSD License',
 	description = 'A Django address book application.',
 	long_description = read('README'),
 	
-	author = 'Asgard Project',
-	author_email = 'hi@asgardproject.com',
+	author = 'Myles Braithwaite',
+	author_email = 'me@mylesbraithwaite.com',
 	
 	packages = find_packages('src'),
 	package_dir = {'': 'src'},
 	
 	install_requires = [
 		'distribute',
+        'django-contrib-comments'
 	],
 	
 	classifiers = [

@@ -1,11 +1,10 @@
 from django.db import models
 from django.db.models import permalink
 from django.conf import settings
-from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext as _
-from django.contrib.comments.models import Comment
+from django_comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.generic import GenericRelation
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 
 from contacts.managers import SpecialDateManager
 
@@ -193,7 +192,7 @@ class PhoneNumber(models.Model):
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	content_object = GenericForeignKey()
 	
 	phone_number = models.CharField(_('number'), max_length=50)
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False})
@@ -213,7 +212,7 @@ class EmailAddress(models.Model):
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	content_object = GenericForeignKey()
 	
 	email_address = models.EmailField(_('email address'))
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
@@ -249,7 +248,7 @@ class InstantMessenger(models.Model):
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	content_object = GenericForeignKey()
 	
 	im_account = models.CharField(_('im account'), max_length=100)
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
@@ -271,7 +270,7 @@ class WebSite(models.Model):
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	content_object = GenericForeignKey()
 
 	url = models.URLField(_('URL'))
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
@@ -294,7 +293,7 @@ class StreetAddress(models.Model):
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	content_object = GenericForeignKey()
 	
 	street = models.TextField(_('street'), blank=True)
 	city = models.CharField(_('city'), max_length=200, blank=True)
@@ -318,7 +317,7 @@ class SpecialDate(models.Model):
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
+	content_object = GenericForeignKey()
 	
 	occasion = models.TextField(_('occasion'), max_length=200)
 	date = models.DateField(_('date'))

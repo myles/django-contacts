@@ -1,28 +1,28 @@
 from django.contrib import admin
-from django.contrib.contenttypes import generic
-from django.contrib.comments.models import Comment
+from django.contrib.contenttypes.admin import GenericTabularInline, GenericStackedInline
+from django_comments.models import Comment
 
 from contacts.models import Company, Person, Group, PhoneNumber, EmailAddress, InstantMessenger, WebSite, StreetAddress, SpecialDate, Location
 
-class EmailAddressInline(generic.GenericTabularInline):
+class EmailAddressInline(GenericTabularInline):
 	model = EmailAddress
 
-class PhoneNumberInline(generic.GenericTabularInline):
+class PhoneNumberInline(GenericTabularInline):
 	model = PhoneNumber
 
-class InstantMessengerInline(generic.GenericTabularInline):
+class InstantMessengerInline(GenericTabularInline):
 	model = InstantMessenger
 
-class WebSiteInline(generic.GenericTabularInline):
+class WebSiteInline(GenericTabularInline):
 	model = WebSite
 
-class StreetAddressInline(generic.GenericStackedInline):
+class StreetAddressInline(GenericStackedInline):
 	model = StreetAddress
 
-class SpecialDateInline(generic.GenericStackedInline):
+class SpecialDateInline(GenericStackedInline):
 	model = SpecialDate
 
-class CommentInline(generic.GenericStackedInline):
+class CommentInline(GenericStackedInline):
 	model = Comment
 	ct_fk_field = 'object_pk'
 
