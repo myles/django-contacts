@@ -1,4 +1,4 @@
-{% extends "contacts/base.html" %}
+{% extends "contacts/person/base.html" %}
 {% load i18n %}
 
 {% block title %}{{ block.super }}: {{ object }}{% endblock %}
@@ -6,15 +6,17 @@
 {% block content_title %}
 	<h2>
 		<span class="fn">{{ object }}</span>
+		{% if object.suffix %}
+		<span class="suffix">{{ object.suffix }}</span>
+		{% endif %}
 		{% if object.nickname %}
 		<span class="alt">(<span class="nickname">{{ object.nickname }}</span>)</span>
 		{% endif %}
 	</h2>
 	<p class="meta org">
-		{% if object.title %}<span class="title">{{ object.title }}</span> at {% endif %}
-		<a href="{{ object.company.get_absolute_url }}" class="organization-name">
-			{{ object.company }}
-		</a>
+		{% if object.title %}<span class="title">{{ object.title }}</span>{% endif %}
+		{% if object.title and object.company %}at{% endif %}
+		{% if object.company %}<a href="{{ object.company.get_absolute_url }}" class="organization-name">{{ object.company }}</a>{% endif %}
 	</p>
 	
 	<p>
@@ -31,5 +33,6 @@
 	{% include "contacts/_instant_messenger_list.html" %}
 	{% include "contacts/_street_address_list.html" %}
 	{% include "contacts/_web_site_list.html" %}
+	{% include "contacts/_special_date_list.html" %}
 	{% include "contacts/_comment_list.html" %}
 {% endblock %}

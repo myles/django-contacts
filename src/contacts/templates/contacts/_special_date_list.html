@@ -1,0 +1,16 @@
+{% load i18n %}
+
+{% if object.special_date.all %}
+<div id="contacts_special_dates">
+	<h3>{% trans "Special dates" %}</h3>
+
+	<ul class="link_list">
+	{% for special_date in object.special_date.all %}
+		<li>
+		    <strong>{{ special_date.occasion }}</strong>:
+		    {{ special_date.date|date:"jS F" }}{% if not special_date.every_year %}{{ special_date.date|date:"Y" }}{% endif %}
+		</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}

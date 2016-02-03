@@ -1,4 +1,4 @@
-{% extends "contacts/base.html" %}
+{% extends "contacts/person/base.html" %}
 {% load i18n %}
 
 {% block title %}{{ block.super }}: {% trans "People" %}{% endblock %}
@@ -9,7 +9,7 @@
 
 {% block content %}
 	<p>
-		<a href="{% url contacts_person_create %}">{% trans "Create" %}</a>
+		<a href="{% url "contacts_person_create" %}">{% trans "Create" %}</a>
 	</p>
 
 	<ul class="link_list">

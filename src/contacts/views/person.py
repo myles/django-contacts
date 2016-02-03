@@ -1,12 +1,12 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
 
-from contacts.models import Person, Group
-from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet
+from contacts.models import Person
+from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet, SpecialDateFormSet
 
 def list(request, page=1, template='contacts/person/list.html'):
     """List of all the people.
@@ -30,13 +30,20 @@ def list(request, page=1, template='contacts/person/list.html'):
         'has_other_pages': people.has_other_pages(),
         'start_index': people.start_index(),
         'end_index': people.end_index(),
-        'previous_page_number': people.previous_page_number(),
-        'next_page_number': people.next_page_number(),
     }
+
+    try:
+        kwvars['previous_page_number'] = people.previous_page_number()
+    except (EmptyPage, InvalidPage):
+        kwvars['previous_page_number'] = None
+    try:
+        kwvars['next_page_number'] = people.next_page_number()
+    except (EmptyPage, InvalidPage):
+        kwvars['next_page_number'] = None
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def detail(request, slug, template='contacts/person/detail.html'):
+def detail(request, pk, slug=None, template='contacts/person/detail.html'):
     """Detail of a person.
 
     :param template: Add a custom template.
@@ -44,7 +51,7 @@ def detail(request, slug, template='contacts/person/detail.html'):
 
 
     try:
-        person = Person.objects.get(slug__iexact=slug)
+        person = Person.objects.get(pk__iexact=pk)
     except Person.DoesNotExist:
         raise Http404
 
@@ -82,7 +89,7 @@ def create(request, template='contacts/person/create.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def update(request, slug, template='contacts/person/update.html'):
+def update(request, pk, slug=None, template='contacts/person/update.html'):
     """Update a person.
 
     :param template: A custom template.
@@ -94,7 +101,7 @@ def update(request, slug, template='contacts/person/update.html'):
         return HttpResponseForbidden()
 
     try:
-        person = Person.objects.get(slug__iexact=slug)
+        person = Person.objects.get(pk__iexact=pk)
     except person.DoesNotExist:
         raise Http404
 
@@ -105,6 +112,7 @@ def update(request, slug, template='contacts/person/update.html'):
         im_formset = InstantMessengerFormSet(request.POST, instance=person)
         website_formset = WebSiteFormSet(request.POST, instance=person)
         address_formset = StreetAddressFormSet(request.POST, instance=person)
+        special_date_formset = SpecialDateFormSet(request.POST, instance=person)
 
         if form.is_valid() and phone_formset.is_valid() and \
             email_formset.is_valid() and im_formset.is_valid() and \
@@ -115,6 +123,7 @@ def update(request, slug, template='contacts/person/update.html'):
             im_formset.save()
             website_formset.save()
             address_formset.save()
+            special_date_formset.save()
             return HttpResponseRedirect(person.get_absolute_url())
         else:
             return HttpResponseServerError
@@ -125,6 +134,7 @@ def update(request, slug, template='contacts/person/update.html'):
     im_formset = InstantMessengerFormSet(instance=person)
     website_formset = WebSiteFormSet(instance=person)
     address_formset = StreetAddressFormSet(instance=person)
+    special_date_formset = SpecialDateFormSet(instance=person)
 
     kwvars = {
         'form': form,
@@ -133,12 +143,13 @@ def update(request, slug, template='contacts/person/update.html'):
         'im_formset': im_formset,
         'website_formset': website_formset,
         'address_formset': address_formset,
+        'special_date_formset': special_date_formset,
         'object': person,
     }
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def delete(request, slug, template='contacts/person/delete.html'):
+def delete(request, pk, slug=None, template='contacts/person/delete.html'):
     """Delete a company.
 
     :param template: A custom template.
@@ -150,7 +161,7 @@ def delete(request, slug, template='contacts/person/delete.html'):
         return HttpResponseForbidden()
 
     try:
-        person = Person.objects.get(slug__iexact=slug)
+        person = Person.objects.get(pk__iexact=pk)
     except Person.DoesNotExist:
         raise Http404
 

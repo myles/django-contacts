@@ -54,8 +54,10 @@
 			"name": "Torontonian",
 			"slug": "torontonian",
 			"about": "People and Companies from Toronto.",
-			"people": [1],
-			"companies": [1]
+			"people": [1, 2],
+			"companies": [1, 2],
+			"date_modified": "2009-05-28 21:28:34",
+			"date_added": "2009-05-28 21:28:34"
 		}
 	}
 ]

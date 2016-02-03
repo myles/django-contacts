@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<fieldset id="special_dates" class="">
+	<legend>{% trans "Special Dates" %}</legend>
+	{{ special_date_formset.management_form }}
+	{% for form in special_date_formset.forms %}
+	<p>
+		{{ form.occasion }}
+		{{ form.date }}
+		<label>{{ form.every_year.label }}</label>{{ form.every_year }}
+	</p>
+	<p>
+		<label>{{ form.DELETE.label }}</label>
+		{{ form.DELETE }}
+		{{ form.id }}
+	</p>
+	{% endfor %}
+</fieldset>

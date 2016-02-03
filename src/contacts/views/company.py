@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from contacts.models import Company
-from contacts.forms import CompanyCreateForm, CompanyUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet
+from contacts.forms import CompanyCreateForm, CompanyUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet, SpecialDateFormSet
 
 def list(request, page=1, template='contacts/company/list.html'):
     """List of all the comapnies.
@@ -29,20 +29,27 @@ def list(request, page=1, template='contacts/company/list.html'):
         'has_other_pages': companies.has_other_pages(),
         'start_index': companies.start_index(),
         'end_index': companies.end_index(),
-        'previous_page_number': companies.previous_page_number(),
-        'next_page_number': companies.next_page_number(),
     }
+
+    try:
+        kwvars['previous_page_number'] = companies.previous_page_number()
+    except (EmptyPage, InvalidPage):
+        kwvars['previous_page_number'] = None
+    try:
+        kwvars['next_page_number'] = companies.next_page_number()
+    except (EmptyPage, InvalidPage):
+        kwvars['next_page_number'] = None
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def detail(request, slug, template='contacts/company/detail.html'):
+def detail(request, pk, slug=None, template='contacts/company/detail.html'):
     """Detail of a company.
 
     :param template: Add a custom template.
     """
 
     try:
-        company = Company.objects.get(slug__iexact=slug)
+        company = Company.objects.get(pk__iexact=pk)
     except Company.DoesNotExist:
         raise Http404
 
@@ -85,7 +92,7 @@ def create(request, template='contacts/company/create.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def update(request, slug, template='contacts/company/update.html'):
+def update(request, pk, slug=None, template='contacts/company/update.html'):
     """Update a company.
 
     :param template: A custom template.
@@ -97,7 +104,7 @@ def update(request, slug, template='contacts/company/update.html'):
         return HttpResponseForbidden()
 
     try:
-        company = Company.objects.get(slug__iexact=slug)
+        company = Company.objects.get(pk__iexact=pk)
     except Company.DoesNotExist:
         raise Http404
 
@@ -107,7 +114,8 @@ def update(request, slug, template='contacts/company/update.html'):
     im_formset = InstantMessengerFormSet(instance=company)
     website_formset = WebSiteFormSet(instance=company)
     address_formset = StreetAddressFormSet(instance=company)
-
+    special_date_formset = SpecialDateFormSet(instance=company)
+    
     if request.method == 'POST':
         form = CompanyUpdateForm(request.POST, instance=company)
         phone_formset = PhoneNumberFormSet(request.POST, instance=company)
@@ -115,6 +123,7 @@ def update(request, slug, template='contacts/company/update.html'):
         im_formset = InstantMessengerFormSet(request.POST, instance=company)
         website_formset = WebSiteFormSet(request.POST, instance=company)
         address_formset = StreetAddressFormSet(request.POST, instance=company)
+        special_date_formset = SpecialDateFormSet(request.POST, instance=company)
 
         if form.is_valid() and phone_formset.is_valid() and \
             email_formset.is_valid() and im_formset.is_valid() and \
@@ -125,6 +134,7 @@ def update(request, slug, template='contacts/company/update.html'):
             im_formset.save()
             website_formset.save()
             address_formset.save()
+            special_date_formset.save()
             return HttpResponseRedirect(company.get_absolute_url())
 
     kwvars = {
@@ -134,12 +144,13 @@ def update(request, slug, template='contacts/company/update.html'):
         'im_formset': im_formset,
         'website_formset': website_formset,
         'address_formset': address_formset,
+        'special_date_formset': special_date_formset,
         'object': company,
     }
 
     return render_to_response(template, kwvars, RequestContext(request))
 
-def delete(request, slug, template='contacts/company/delete.html'):
+def delete(request, pk, slug=None, template='contacts/company/delete.html'):
     """Update a company.
 
     :param template: A custom template.
@@ -150,7 +161,7 @@ def delete(request, slug, template='contacts/company/delete.html'):
         return HttpResponseForbidden()
 
     try:
-        company = Company.objects.get(slug__iexact=slug)
+        company = Company.objects.get(pk__iexact=pk)
     except Company.DoesNotExist:
         raise Http404
 

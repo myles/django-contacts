@@ -1,16 +1,19 @@
-{% load i18n %}
+{% load i18n comments %}
+{% get_comment_form for object as form %}
 
 <div id="contact_notes">
-	<form action="{% url comments-post-comment %}" method="post" accept-charset="utf-8">
-		<p><label for="id_comment">{% trans "Comment" %}</label><textarea name="id_comment" id="id_comment" rows="8" cols="40"></textarea></p>
+	<form action="{% url "comments-post-comment" %}" method="post" accept-charset="utf-8">
+		<p><label for="id_comment">{% trans "Comment" %}</label><textarea name="comment" id="id_comment" rows="8" cols="40"></textarea></p>
 		<p><input type="submit" value="{% trans "Add" %}"></p>
+		{% csrf_token %}{{ form.security_hash }}{{ form.timestamp }}{{ form.content_type }}{{ form.object_pk }}
+		<input type="hidden" name="next" value="{{ object.get_absolute_url }}">
 	</form>
 
 	{% if object.note.all %}
 	<h3>{% trans "Notes" %}</h3>
 
 	{% for note in object.note.all %}
-	<div id="note-{{ comment.id }}">
+	<div id="note-{{ note.id }}">
 		<h4>
 			{{ note.submit_date }}
 			<span class="alt">
@@ -20,10 +23,11 @@
 				({{ note.user.username }})
 				{% endif %}
 			</span>
+			<a href="#note-{{ note.id }}">#</a>
 		</h4>
-		{% endfor %}
-
+		
 		{{ note.comment|linebreaks }}
+		{% endfor %}
 	</div>
 	{% endif %}
 </div>

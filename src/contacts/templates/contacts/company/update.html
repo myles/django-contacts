@@ -1,4 +1,4 @@
-{% extends "contacts/base.html" %}
+{% extends "contacts/company/base.html" %}
 {% load i18n %}
 
 {% block title %}{{ block.super }}: Edit {{ object.name }}{% endblock %}
@@ -17,6 +17,7 @@
 		{% include "contacts/_instant_messenger_form.html" %}
 		{% include "contacts/_web_site_form.html" %}
 		{% include "contacts/_street_address_form.html" %}
+		{% include "contacts/_special_date_form.html" %}
 
 		<p><input type="submit" value="{% trans "Save" %}"></p>
 	</form>
