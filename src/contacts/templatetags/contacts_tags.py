@@ -13,12 +13,12 @@ def base_tag(parser, token, cls):
     try:
         tag_name, arg = token.contents.split(None, 1)
     except ValueError:
-        raise template.TemplateSyntaxError, "%s tag requires arguments" % token.contents.split()[0]
+        raise template.TemplateSyntaxError ("%s tag requires arguments" % token.contents.split()[0])
     
     m = re.search(r'(.*?) as (\w+)', arg)
     
     if not m:
-        raise template.TemplateSyntaxError, "%s tag had invalid arguments" % tag_name
+        raise template.TemplateSyntaxError ("%s tag had invalid arguments" % tag_name)
     
     format_string, var_name = m.groups()
     
