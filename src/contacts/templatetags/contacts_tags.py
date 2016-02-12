@@ -2,10 +2,10 @@ import re
 
 from django import template
 from django.conf import settings
-from django.db import models
+from django.apps import apps
 
-Person = models.get_model('contacts', 'person')
-Company = models.get_model('contacts', 'company')
+Person = apps.get_model('contacts', 'person')
+Company = apps.get_model('contacts', 'company')
 
 register = template.Library()
 
