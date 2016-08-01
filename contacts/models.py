@@ -215,8 +215,8 @@ class PhoneNumber(models.Model):
 
     class Meta:
         db_table = 'contacts_phone_numbers'
-        verbose_name = 'phone number'
-        verbose_name_plural = 'phone numbers'
+        verbose_name = _('phone number')
+        verbose_name_plural = _('phone numbers')
 
 
 class EmailAddress(models.Model):
