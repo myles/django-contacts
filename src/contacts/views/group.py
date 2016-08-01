@@ -1,12 +1,14 @@
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
+from django.http import (Http404, HttpResponseForbidden,
+                         HttpResponseServerError, HttpResponseRedirect)
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from contacts.models import Group
 from contacts.forms import GroupCreateForm, GroupUpdateForm
+
 
 def list(request, page=1, template='contacts/group/list.html'):
     """List of all the groups.
@@ -42,6 +44,7 @@ def list(request, page=1, template='contacts/group/list.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
+
 def detail(request, pk, slug=None, template='contacts/group/detail.html'):
     """Detail of a group.
 
@@ -58,6 +61,7 @@ def detail(request, pk, slug=None, template='contacts/group/detail.html'):
     }
 
     return render_to_response(template, kwvars, RequestContext(request))
+
 
 def create(request, template='contacts/group/create.html'):
     """Create a group.
@@ -88,6 +92,7 @@ def create(request, template='contacts/group/create.html'):
     }
 
     return render_to_response(template, kwvars, RequestContext(request))
+
 
 def update(request, pk, slug=None, template='contacts/group/update.html'):
     """Update a group.
@@ -120,6 +125,7 @@ def update(request, pk, slug=None, template='contacts/group/update.html'):
     }
 
     return render_to_response(template, kwvars, RequestContext(request))
+
 
 def delete(request, pk, slug=None, template='contacts/group/delete.html'):
     """Update a group.

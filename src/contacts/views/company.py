@@ -1,12 +1,17 @@
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
+from django.http import (Http404, HttpResponseForbidden,
+                         HttpResponseServerError, HttpResponseRedirect)
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from contacts.models import Company
-from contacts.forms import CompanyCreateForm, CompanyUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet, SpecialDateFormSet
+from contacts.forms import (CompanyCreateForm, CompanyUpdateForm,
+                            PhoneNumberFormSet, EmailAddressFormSet,
+                            InstantMessengerFormSet, WebSiteFormSet,
+                            StreetAddressFormSet, SpecialDateFormSet)
+
 
 def list(request, page=1, template='contacts/company/list.html'):
     """List of all the comapnies.
@@ -42,6 +47,7 @@ def list(request, page=1, template='contacts/company/list.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
+
 def detail(request, pk, slug=None, template='contacts/company/detail.html'):
     """Detail of a company.
 
@@ -58,6 +64,7 @@ def detail(request, pk, slug=None, template='contacts/company/detail.html'):
     }
 
     return render_to_response(template, kwvars, RequestContext(request))
+
 
 def create(request, template='contacts/company/create.html'):
     """Create a company.
@@ -92,6 +99,7 @@ def create(request, template='contacts/company/create.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
+
 def update(request, pk, slug=None, template='contacts/company/update.html'):
     """Update a company.
 
@@ -115,7 +123,7 @@ def update(request, pk, slug=None, template='contacts/company/update.html'):
     website_formset = WebSiteFormSet(instance=company)
     address_formset = StreetAddressFormSet(instance=company)
     special_date_formset = SpecialDateFormSet(instance=company)
-    
+
     if request.method == 'POST':
         form = CompanyUpdateForm(request.POST, instance=company)
         phone_formset = PhoneNumberFormSet(request.POST, instance=company)
@@ -126,8 +134,8 @@ def update(request, pk, slug=None, template='contacts/company/update.html'):
         special_date_formset = SpecialDateFormSet(request.POST, instance=company)
 
         if form.is_valid() and phone_formset.is_valid() and \
-            email_formset.is_valid() and im_formset.is_valid() and \
-            website_formset.is_valid() and address_formset.is_valid():
+                email_formset.is_valid() and im_formset.is_valid() and \
+                website_formset.is_valid() and address_formset.is_valid():
             form.save()
             phone_formset.save()
             email_formset.save()
@@ -149,6 +157,7 @@ def update(request, pk, slug=None, template='contacts/company/update.html'):
     }
 
     return render_to_response(template, kwvars, RequestContext(request))
+
 
 def delete(request, pk, slug=None, template='contacts/company/delete.html'):
     """Update a company.
