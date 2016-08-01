@@ -13,11 +13,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    'django.contrib.admindocs',
     'django.contrib.staticfiles',
     'django_comments',
     'contacts',
 ]
-ROOT_URLCONF = 'contacts.testurls'
+ROOT_URLCONF = 'contacts.tests.urls'
 SECRET_KEY = 'test-secret-key'
 STATIC_URL = '/static/'
