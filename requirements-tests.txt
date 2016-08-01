@@ -1,1 +1,3 @@
 coverage<4
+factory_boy
+fake-factory
