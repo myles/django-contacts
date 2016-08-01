@@ -1,0 +1,5 @@
+recursive-include contacts/templates *
+recursive-include contacts/locales *.po
+include requirements*.txt
+include LICENSE
+include README.rst
