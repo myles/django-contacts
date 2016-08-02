@@ -1,0 +1,424 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-02 10:23-0500\n"
+"PO-Revision-Date: 2016-08-02 10:23-0500\n"
+"Last-Translator: Anthony Monthe (ZuluPro) <anthony.monthe@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: forms.py:44 templates/admin/contacts/company/change_form.html:9
+#: templates/contacts/group/detail.html:37
+#: templates/contacts/person/list.html:4 templates/contacts/person/list.html:7
+msgid "People"
+msgstr "Gens"
+
+#: forms.py:46 templates/contacts/company/list.html:4
+#: templates/contacts/company/list.html:7
+#: templates/contacts/group/detail.html:47
+msgid "Companies"
+msgstr "Companies"
+
+#: models.py:17 models.py:134 models.py:181
+msgid "name"
+msgstr "nom"
+
+#: models.py:18 models.py:74
+msgid "nickname"
+msgstr "surnom"
+
+#: models.py:20 models.py:75 models.py:135 models.py:182
+msgid "slug"
+msgstr "slug"
+
+#: models.py:21 models.py:78 models.py:136
+msgid "about"
+msgstr "à propos"
+
+#: models.py:22 models.py:79
+msgid "photo"
+msgstr "photo"
+
+#: models.py:33 models.py:93 models.py:142 models.py:191 models.py:216
+#: models.py:239 models.py:280 models.py:303 models.py:334 models.py:357
+msgid "date added"
+msgstr "date d'ajout"
+
+#: models.py:34 models.py:94 models.py:143 models.py:192 models.py:217
+#: models.py:240 models.py:281 models.py:304 models.py:335 models.py:358
+msgid "date modified"
+msgstr "date de modification"
+
+#: models.py:39
+msgid "company"
+msgstr "companie"
+
+#: models.py:40
+msgid "companies"
+msgstr "companies"
+
+#: models.py:70
+msgid "first name"
+msgstr "prénom"
+
+#: models.py:71
+msgid "last name"
+msgstr "nom de famille"
+
+#: models.py:72
+msgid "middle name"
+msgstr "2ème prénom"
+
+#: models.py:73
+msgid "suffix"
+msgstr "suffix"
+
+#: models.py:76
+msgid "title"
+msgstr "titre"
+
+#: models.py:83
+msgid "user"
+msgstr "utilisateur"
+
+#: models.py:99
+msgid "person"
+msgstr "personne"
+
+#: models.py:100
+msgid "people"
+msgstr "gens"
+
+#: models.py:148
+msgid "group"
+msgstr "groupe"
+
+#: models.py:149
+msgid "groups"
+msgstr "groupes"
+
+#: models.py:184
+msgid "is phone"
+msgstr "est un téléphone"
+
+#: models.py:185
+msgid "Only used for Phone"
+msgstr "Seulement utilisé pour Téléphone"
+
+#: models.py:186
+msgid "is street address"
+msgstr "est une adresse"
+
+#: models.py:187
+msgid "Only used for Street Address"
+msgstr "Seulement utilisé pour les Adresses"
+
+#: models.py:200
+msgid "location"
+msgstr "lieu"
+
+#: models.py:201
+msgid "locations"
+msgstr "lieux"
+
+#: models.py:212
+msgid "number"
+msgstr "nombre"
+
+#: models.py:224
+msgid "phone number"
+msgstr "numéro de téléphone"
+
+#: models.py:225
+msgid "phone numbers"
+msgstr "numéros de téléphone"
+
+#: models.py:235 models.py:247
+msgid "email address"
+msgstr "adresse email"
+
+#: models.py:248
+msgid "email addresses"
+msgstr "adresses email"
+
+#: models.py:256
+msgid "AIM"
+msgstr "AIM"
+
+#: models.py:257
+msgid "MSN"
+msgstr "MSN"
+
+#: models.py:258
+msgid "ICQ"
+msgstr "ICQ"
+
+#: models.py:259
+msgid "Jabber"
+msgstr "Jabber"
+
+#: models.py:260
+msgid "Yahoo"
+msgstr "Yahoo"
+
+#: models.py:261
+msgid "Skype"
+msgstr "Skype"
+
+#: models.py:262
+msgid "QQ"
+msgstr "QQ"
+
+#: models.py:263
+msgid "Sametime"
+msgstr "Sametime"
+
+#: models.py:264
+msgid "Gadu-Gadu"
+msgstr "Gadu-Gadu"
+
+#: models.py:265
+msgid "Google Talk"
+msgstr "Google Talk"
+
+#: models.py:266
+msgid "Other"
+msgstr "Autre"
+
+#: models.py:274
+msgid "im account"
+msgstr "compte mi"
+
+#: models.py:277
+msgid "service"
+msgstr "service"
+
+#: models.py:288
+msgid "instant messenger"
+msgstr "messagerie instantanée"
+
+#: models.py:289
+msgid "instant messengers"
+msgstr "messageries instantanées"
+
+#: models.py:299
+msgid "URL"
+msgstr "URL"
+
+#: models.py:311
+msgid "web site"
+msgstr "site web"
+
+#: models.py:312
+msgid "web sites"
+msgstr "sites web"
+
+#: models.py:326
+msgid "street"
+msgstr "rue"
+
+#: models.py:327
+msgid "city"
+msgstr "ville"
+
+#: models.py:328
+msgid "province"
+msgstr "province"
+
+#: models.py:329
+msgid "postal code"
+msgstr "code postal"
+
+#: models.py:330
+msgid "country"
+msgstr "pays"
+
+#: models.py:342
+msgid "street address"
+msgstr "adresse postale"
+
+#: models.py:343
+msgid "street addresses"
+msgstr "adresses postales"
+
+#: models.py:353
+msgid "occasion"
+msgstr "occasion"
+
+#: models.py:354
+msgid "date"
+msgstr "date"
+
+#: models.py:355
+msgid "every year"
+msgstr "chaque année"
+
+#: models.py:367
+msgid "special date"
+msgstr "date spéciale"
+
+#: models.py:368
+msgid "special dates"
+msgstr "dates spéciales"
+
+#: templates/admin/contacts/company/change_form.html:11
+#: templates/admin/contacts/person/change_form.html:13
+msgid "History"
+msgstr "Histoire"
+
+#: templates/admin/contacts/company/change_form.html:12
+#: templates/admin/contacts/person/change_form.html:14
+msgid "View on site"
+msgstr "Voir sur le site"
+
+#: templates/admin/contacts/person/change_form.html:10
+msgid "Company"
+msgstr "Companie"
+
+#: templates/contacts/_comment_list.html:6
+msgid "Comment"
+msgstr "Commentaire"
+
+#: templates/contacts/_comment_list.html:7
+msgid "Add"
+msgstr "Ajouter"
+
+#: templates/contacts/_comment_list.html:13
+msgid "Notes"
+msgstr "Notes"
+
+#: templates/contacts/_email_address_form.html:4
+msgid "Email addresses"
+msgstr "Adresse email"
+
+#: templates/contacts/_email_address_list.html:5
+msgid "Email Addresses"
+msgstr "Adresses email"
+
+#: templates/contacts/_instant_messenger_form.html:4
+msgid "Instant messengers"
+msgstr "Messagerie instantanée"
+
+#: templates/contacts/_instant_messenger_list.html:5
+msgid "Instant Messengers"
+msgstr "Messagerie instantanée"
+
+#: templates/contacts/_phone_number_form.html:4
+msgid "Phone numbers"
+msgstr "Numéro de téléphone"
+
+#: templates/contacts/_phone_number_list.html:5
+msgid "Phone Numbers"
+msgstr "Numéros de téléphone"
+
+#: templates/contacts/_special_date_form.html:4
+msgid "Special Dates"
+msgstr "Dates spéciales"
+
+#: templates/contacts/_special_date_list.html:5
+msgid "Special dates"
+msgstr "Dates spéciales"
+
+#: templates/contacts/_street_address_form.html:4
+msgid "Street addresses"
+msgstr "Adresses postales"
+
+#: templates/contacts/_street_address_list.html:5
+msgid "Street Addresses"
+msgstr "Adresses postales"
+
+#: templates/contacts/_web_site_form.html:4
+#: templates/contacts/_web_site_list.html:5
+msgid "Web sites"
+msgstr "Sites web"
+
+#: templates/contacts/base.html:4
+msgid "Contacts"
+msgstr "Contacts"
+
+#: templates/contacts/company/create.html:4
+#: templates/contacts/company/create.html:7
+msgid "Create a new Company"
+msgstr "Créer une nouvelle Companie"
+
+#: templates/contacts/company/create.html:19
+#: templates/contacts/company/list.html:12
+#: templates/contacts/group/create.html:15
+#: templates/contacts/group/list.html:12
+#: templates/contacts/person/list.html:12
+msgid "Create"
+msgstr "Créer"
+
+#: templates/contacts/company/delete.html:4
+#: templates/contacts/company/delete.html:7
+#: templates/contacts/company/detail.html:18
+#: templates/contacts/group/delete.html:4
+#: templates/contacts/group/delete.html:7
+#: templates/contacts/group/detail.html:28
+#: templates/contacts/person/delete.html:4
+#: templates/contacts/person/delete.html:7
+#: templates/contacts/person/detail.html:24
+msgid "Delete"
+msgstr "Supprimer"
+
+#: templates/contacts/company/delete.html:15
+#: templates/contacts/group/delete.html:15
+#: templates/contacts/person/delete.html:15
+msgid "No"
+msgstr "Non"
+
+#: templates/contacts/company/delete.html:16
+#: templates/contacts/group/delete.html:16
+#: templates/contacts/person/delete.html:16
+msgid "Yes"
+msgstr "Oui"
+
+#: templates/contacts/company/delete.html:18
+#: templates/contacts/group/delete.html:18
+#: templates/contacts/person/delete.html:18
+msgid "Submit"
+msgstr "Soumettre"
+
+#: templates/contacts/company/detail.html:17
+#: templates/contacts/group/detail.html:27
+#: templates/contacts/person/detail.html:23
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: templates/contacts/company/update.html:7
+#: templates/contacts/group/update.html:7
+#: templates/contacts/person/update.html:4
+#: templates/contacts/person/update.html:7
+msgid "Edit"
+msgstr "Editer"
+
+#: templates/contacts/company/update.html:22
+#: templates/contacts/group/update.html:15
+#: templates/contacts/person/update.html:23
+msgid "Save"
+msgstr "Sauver"
+
+#: templates/contacts/group/create.html:4
+#: templates/contacts/group/create.html:7
+msgid "Create a new Group"
+msgstr "Créer un nouveau Groupe"
+
+#: templates/contacts/group/list.html:4 templates/contacts/group/list.html:7
+msgid "Groups"
+msgstr "Groupes"
+
+#: templates/contacts/person/create.html:4
+#: templates/contacts/person/create.html:7
+msgid "Add a new Person"
+msgstr "Ajouter une Personne"
