@@ -20,3 +20,10 @@ INSTALLED_APPS = [
 ROOT_URLCONF = 'contacts.tests.urls'
 SECRET_KEY = 'test-secret-key'
 STATIC_URL = '/static/'
+
+MIDDLEWARE_CLASSES = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
