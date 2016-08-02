@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.core.urlresolvers import reverse_lazy as reverse
+from django.core.urlresolvers import reverse
 from contacts.tests import factories
 from contacts import models
 
