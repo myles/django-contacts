@@ -102,7 +102,7 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
 
     try:
         person = Person.objects.get(pk__iexact=pk)
-    except person.DoesNotExist:
+    except Person.DoesNotExist:
         raise Http404
 
     if request.method == 'POST':
@@ -126,7 +126,7 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
             special_date_formset.save()
             return HttpResponseRedirect(person.get_absolute_url())
         else:
-            return HttpResponseServerError
+            return HttpResponseServerError()
 
     form = PersonUpdateForm(instance=person)
     phone_formset = PhoneNumberFormSet(instance=person)
