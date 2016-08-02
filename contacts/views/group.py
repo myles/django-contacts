@@ -85,7 +85,7 @@ def create(request, template='contacts/group/create.html'):
             g.save()
             return HttpResponseRedirect(g.get_absolute_url())
         else:
-            return HttpResponseServerError
+            return HttpResponseServerError()
 
     kwvars = {
         'form': GroupCreateForm(request.POST)
