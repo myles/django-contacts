@@ -1,41 +1,49 @@
 from django import forms
-from django.forms import ModelForm, Form
-from django.contrib.contenttypes.generic import generic_inlineformset_factory as inlineformset_factory
+from django.contrib.contenttypes.generic import \
+    generic_inlineformset_factory as inlineformset_factory
 
-from contacts.models import Company, Person, Group, PhoneNumber, EmailAddress, InstantMessenger, WebSite, StreetAddress, SpecialDate
+from contacts import models
 
-class CompanyCreateForm(ModelForm):
-	class Meta:
-		model = Company
-		fields = ('name', 'nickname', 'about')
 
-class CompanyUpdateForm(ModelForm):
-	class Meta:
-		model = Company
+class CompanyCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.Company
+        fields = ('name', 'nickname', 'about')
 
-class PersonCreateForm(ModelForm):
-	class Meta:
-		model = Person
-		fields = ('first_name', 'last_name', 'title', 'company', 'about')
 
-class PersonUpdateForm(ModelForm):
-	class Meta:
-		model = Person
-		fields = ('first_name', 'last_name', 'title', 'company')
+class CompanyUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.Company
 
-class GroupCreateForm(ModelForm):
-	class Meta:
-		model = Group
-		fields = ('name', 'about')
 
-class GroupUpdateForm(ModelForm):
-	class Meta:
-		model = Group
-		exclude = ('slug',)
+class PersonCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.Person
+        fields = ('first_name', 'last_name', 'title', 'company', 'about')
 
-PhoneNumberFormSet = inlineformset_factory(PhoneNumber, extra=1)
-EmailAddressFormSet = inlineformset_factory(EmailAddress, extra=1)
-InstantMessengerFormSet = inlineformset_factory(InstantMessenger, extra=1)
-WebSiteFormSet = inlineformset_factory(WebSite, extra=1)
-StreetAddressFormSet = inlineformset_factory(StreetAddress, extra=1)
-SpecialDateFormSet = inlineformset_factory(SpecialDate, extra=1)
+
+class PersonUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.Person
+        fields = ('first_name', 'last_name', 'title', 'company')
+
+
+class GroupCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.Group
+        fields = ('name', 'about')
+
+
+class GroupUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.Group
+        exclude = ('slug',)
+
+
+PhoneNumberFormSet = inlineformset_factory(models.PhoneNumber, extra=1)
+EmailAddressFormSet = inlineformset_factory(models.EmailAddress, extra=1)
+InstantMessengerFormSet = inlineformset_factory(models.InstantMessenger,
+                                                extra=1)
+WebSiteFormSet = inlineformset_factory(models.WebSite, extra=1)
+StreetAddressFormSet = inlineformset_factory(models.StreetAddress, extra=1)
+SpecialDateFormSet = inlineformset_factory(models.SpecialDate, extra=1)

@@ -1,20 +1,23 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
+from django.http import (Http404, HttpResponseForbidden,
+                         HttpResponseServerError, HttpResponseRedirect)
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
 
 from contacts.models import Person
-from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet, SpecialDateFormSet
+from contacts.forms import (PersonCreateForm, PersonUpdateForm,
+                            PhoneNumberFormSet, EmailAddressFormSet,
+                            InstantMessengerFormSet, WebSiteFormSet,
+                            StreetAddressFormSet, SpecialDateFormSet)
+
 
 def list(request, page=1, template='contacts/person/list.html'):
     """List of all the people.
 
     :param template: Add a custom template.
     """
-
-
     person_list = Person.objects.all()
     paginator = Paginator(person_list, 20)
 
@@ -43,13 +46,12 @@ def list(request, page=1, template='contacts/person/list.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
+
 def detail(request, pk, slug=None, template='contacts/person/detail.html'):
     """Detail of a person.
 
     :param template: Add a custom template.
     """
-
-
     try:
         person = Person.objects.get(pk__iexact=pk)
     except Person.DoesNotExist:
@@ -61,13 +63,12 @@ def detail(request, pk, slug=None, template='contacts/person/detail.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
+
 def create(request, template='contacts/person/create.html'):
     """Create a person.
 
     :param template: A custom template.
     """
-
-
     user = request.user
     if not user.has_perm('add_person'):
         return HttpResponseForbidden()
@@ -89,13 +90,12 @@ def create(request, template='contacts/person/create.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
+
 def update(request, pk, slug=None, template='contacts/person/update.html'):
     """Update a person.
 
     :param template: A custom template.
     """
-
-
     user = request.user
     if not user.has_perm('change_person'):
         return HttpResponseForbidden()
@@ -115,8 +115,8 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
         special_date_formset = SpecialDateFormSet(request.POST, instance=person)
 
         if form.is_valid() and phone_formset.is_valid() and \
-            email_formset.is_valid() and im_formset.is_valid() and \
-            website_formset.is_valid() and address_formset.is_valid():
+                email_formset.is_valid() and im_formset.is_valid() and \
+                website_formset.is_valid() and address_formset.is_valid():
             form.save()
             phone_formset.save()
             email_formset.save()
@@ -149,13 +149,12 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
 
     return render_to_response(template, kwvars, RequestContext(request))
 
+
 def delete(request, pk, slug=None, template='contacts/person/delete.html'):
     """Delete a company.
 
     :param template: A custom template.
     """
-
-
     user = request.user
     if not user.has_perm('delete_person'):
         return HttpResponseForbidden()
