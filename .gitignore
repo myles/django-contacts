@@ -15,3 +15,5 @@ src/contacts/locale/*/LC_MESSAGES/*.mo
 
 /.project
 /.pydevproject
+.tox
+.coverage
