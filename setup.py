@@ -1,5 +1,6 @@
 import os
 from setuptools import setup, find_packages
+import contacts
 
 
 def read(fname):
@@ -8,24 +9,22 @@ def read(fname):
 
 setup(
     name='django-contacts',
-    version='0.5',
-    url='http://github.com/myles/django-contacts',
-    license='BSD License',
-    description='A Django address book application.',
-    long_description=read('README'),
+    version=contacts.__version__,
+    url=contacts.__url__,
+    license=contacts.__license__,
+    description=contacts.__doc__,
+    long_description=read('README.rst'),
 
-    author='Myles Braithwaite',
-    author_email='me@mylesbraithwaite.com',
+    author=contacts.__author__,
+    author_email=contacts.__email__,
 
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
+    packages=find_packages(),
 
-    install_requires=[
-        'distribute', 'django-contrib-comments'
-    ],
+    install_requires=read('requirements.txt').splitlines(),
 
     classifiers=[
         'Development Status :: 4 - Beta',
+        'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
