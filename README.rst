@@ -8,10 +8,9 @@ Requirements
 
 * Python_: 2.4 and higher (but lower than 3)
 * Django_: 1.1.1
-
- * django.contrib.auth
- * django.contrib.contenttypes
- * django.contrib.comments
+* django.contrib.auth
+* django.contrib.contenttypes
+* django.contrib.comments
 
 Thanks
 ------
