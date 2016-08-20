@@ -14,6 +14,7 @@ class CompanyCreateForm(forms.ModelForm):
 class CompanyUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Company
+        fields = '__all__'
 
 
 class PersonCreateForm(forms.ModelForm):
