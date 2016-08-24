@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.admin import widgets
+from django.utils.translation import ugettext_lazy as _
 try:
     from django.contrib.contenttypes.generic import \
         generic_inlineformset_factory as inlineformset_factory
@@ -31,6 +33,18 @@ class PersonUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Person
         fields = ('first_name', 'last_name', 'title', 'company')
+
+
+class GroupAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.Group
+        fields = '__all__'
+        widgets = {
+            'people': widgets.FilteredSelectMultiple(
+                _("People"), is_stacked=False),
+            'companies': widgets.FilteredSelectMultiple(
+                _("Companies"), is_stacked=False),
+        }
 
 
 class GroupCreateForm(forms.ModelForm):
