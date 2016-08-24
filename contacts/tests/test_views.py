@@ -432,3 +432,163 @@ class PersonDeleteTest(TestCase):
         self.failUnlessEqual(response.status_code, 403)
         response = self.client.post(url)
         self.failUnlessEqual(response.status_code, 403)
+
+
+class GroupListTest(TestCase):
+    url = reverse('contacts_group_list')
+
+    def test_view(self):
+        factories.GroupFactory.build_batch(25)
+        response = self.client.get(self.url)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_empty(self):
+        response = self.client.get(self.url)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_paginated(self):
+        factories.GroupFactory.build_batch(25)
+        url = reverse('contacts_group_list_paginated', kwargs={'page': 1})
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_no_previous_and_no_next(self):
+        factories.GroupFactory.build_batch(5)
+        url = reverse('contacts_group_list_paginated', kwargs={'page': 1})
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_invalid_page(self):
+        factories.GroupFactory.build_batch(5)
+        url = reverse('contacts_group_list_paginated', kwargs={'page': 3})
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 200)
+
+
+class GroupDetailsTest(TestCase):
+    def test_view(self):
+        group = factories.GroupFactory()
+        url = reverse('contacts_group_detail', kwargs={'pk': group.id})
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_unfound(self):
+        url = reverse('contacts_group_detail', kwargs={'pk': 42})
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 404)
+
+
+class GroupCreateTest(TestCase):
+    url = reverse('contacts_group_create')
+
+    def setUp(self):
+        self.user = factories.UserFactory(is_staff=False, is_superuser=False)
+        self.admin = factories.UserFactory()
+
+    def test_get(self):
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.get(self.url)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_create(self):
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.post(self.url, {
+            'name': 'Foo',
+        })
+        self.failUnlessEqual(response.status_code, 302)
+
+    def test_unvalid_form(self):
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.post(self.url, {'foo': 'bar'})
+        self.failUnlessEqual(response.status_code, 500)
+
+    def test_forbidden(self):
+        self.client.login(username=self.user.username, password='foo')
+        response = self.client.get(self.url)
+        self.failUnlessEqual(response.status_code, 403)
+        response = self.client.post(self.url)
+        self.failUnlessEqual(response.status_code, 403)
+
+
+class GroupUpdateTest(TestCase):
+    def setUp(self):
+        self.user = factories.UserFactory(is_staff=False, is_superuser=False)
+        self.admin = factories.UserFactory()
+        self.group = factories.GroupFactory()
+
+    def test_get(self):
+        url = reverse('contacts_group_update', kwargs={'pk': self.group.pk})
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_post(self):
+        url = reverse('contacts_group_update', kwargs={'pk': self.group.pk})
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.post(url, {'about': '', 'name': 'GroupA'})
+        self.failUnlessEqual(response.status_code, 302)
+
+    def test_post_unvalid_form(self):
+        url = reverse('contacts_group_update', kwargs={'pk': self.group.pk})
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.post(url, {})
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_unfound(self):
+        url = reverse('contacts_group_update', kwargs={'pk': 42})
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 404)
+        response = self.client.post(url)
+        self.failUnlessEqual(response.status_code, 404)
+
+    def test_forbidden(self):
+        url = reverse('contacts_group_update', kwargs={'pk': self.group.pk})
+        self.client.login(username=self.user.username, password='foo')
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 403)
+        response = self.client.post(url)
+        self.failUnlessEqual(response.status_code, 403)
+
+
+class GroupDeleteTest(TestCase):
+    def setUp(self):
+        self.user = factories.UserFactory(is_staff=False, is_superuser=False)
+        self.admin = factories.UserFactory()
+        self.group = factories.GroupFactory()
+
+    def test_get(self):
+        url = reverse('contacts_group_delete', kwargs={'pk': self.group.pk})
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_post(self):
+        url = reverse('contacts_group_delete', kwargs={'pk': self.group.pk})
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.post(url, {'delete_group': 'Yes'})
+        self.failUnlessEqual(response.status_code, 302)
+        self.assertFalse(models.Group.objects.exists())
+
+    def test_post_unconfirmed(self):
+        url = reverse('contacts_group_delete', kwargs={'pk': self.group.pk})
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.post(url, {'delete_group': ''})
+        self.failUnlessEqual(response.status_code, 302)
+        self.assertTrue(models.Group.objects.exists())
+
+    def test_unfound(self):
+        url = reverse('contacts_group_delete', kwargs={'pk': 42})
+        self.client.login(username=self.admin.username, password='foo')
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 404)
+        response = self.client.post(url)
+        self.failUnlessEqual(response.status_code, 404)
+
+    def test_forbidden(self):
+        url = reverse('contacts_group_delete', kwargs={'pk': self.group.pk})
+        self.client.login(username=self.user.username, password='foo')
+        response = self.client.get(url)
+        self.failUnlessEqual(response.status_code, 403)
+        response = self.client.post(url)
+        self.failUnlessEqual(response.status_code, 403)
