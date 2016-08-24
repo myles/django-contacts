@@ -1,6 +1,10 @@
 from django import forms
-from django.contrib.contenttypes.generic import \
-    generic_inlineformset_factory as inlineformset_factory
+try:
+    from django.contrib.contenttypes.generic import \
+        generic_inlineformset_factory as inlineformset_factory
+except ImportError:
+    from django.contrib.contenttypes.forms import \
+        generic_inlineformset_factory as inlineformset_factory
 
 from contacts import models
 

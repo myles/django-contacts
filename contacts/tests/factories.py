@@ -105,3 +105,16 @@ class SpecialDateFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = 'contacts.SpecialDate'
+
+
+class UserFactory(factory.DjangoModelFactory):
+    email = factory.Faker('email')
+    username = factory.Faker('user_name')
+    password = factory.PostGenerationMethodCall('set_password', 'foo')
+
+    is_superuser = True
+    is_staff = True
+    is_active = True
+
+    class Meta:
+        model = 'auth.User'

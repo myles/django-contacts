@@ -91,7 +91,7 @@ def create(request, template='contacts/company/create.html'):
             c.save()
             return HttpResponseRedirect(c.get_absolute_url())
         else:
-            return HttpResponseServerError
+            return HttpResponseServerError()
 
     kwvars = {
         'form': CompanyCreateForm(request.POST)
