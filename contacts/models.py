@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import permalink
 from django.conf import settings
 from django.utils.translation import ugettext as _
+from django.utils.encoding import python_2_unicode_compatible
 from django_comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import (GenericRelation,
@@ -10,6 +11,7 @@ from django.contrib.contenttypes.fields import (GenericRelation,
 from contacts.managers import SpecialDateManager
 
 
+@python_2_unicode_compatible
 class Company(models.Model):
     """Company model."""
     name = models.CharField(_('name'), max_length=200)
@@ -37,8 +39,8 @@ class Company(models.Model):
         verbose_name = _('company')
         verbose_name_plural = _('companies')
 
-    def __unicode__(self):
-        return u"%s" % self.name
+    def __str__(self):
+        return "%s" % self.name
 
     @permalink
     def get_absolute_url(self):
@@ -62,6 +64,7 @@ class Company(models.Model):
         })
 
 
+@python_2_unicode_compatible
 class Person(models.Model):
     """Person model."""
     first_name = models.CharField(_('first name'), max_length=100)
@@ -96,12 +99,12 @@ class Person(models.Model):
         verbose_name = _('person')
         verbose_name_plural = _('people')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.fullname
 
     @property
     def fullname(self):
-        return u"%s %s" % (self.first_name, self.last_name)
+        return "%s %s" % (self.first_name, self.last_name)
 
     @permalink
     def get_absolute_url(self):
@@ -125,6 +128,7 @@ class Person(models.Model):
         })
 
 
+@python_2_unicode_compatible
 class Group(models.Model):
     """Group model."""
     name = models.CharField(_('name'), max_length=200)
@@ -144,8 +148,8 @@ class Group(models.Model):
         verbose_name = _('group')
         verbose_name_plural = _('groups')
 
-    def __unicode__(self):
-        return u"%s" % self.name
+    def __str__(self):
+        return "%s" % self.name
 
     @permalink
     def get_absolute_url(self):
@@ -169,6 +173,7 @@ class Group(models.Model):
         })
 
 
+@python_2_unicode_compatible
 class Location(models.Model):
     """Location model."""
     WEIGHT_CHOICES = [(i, i) for i in range(11)]
@@ -186,8 +191,8 @@ class Location(models.Model):
     date_added = models.DateTimeField(_('date added'), auto_now_add=True)
     date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 
-    def __unicode__(self):
-        return u"%s" % (self.name)
+    def __str__(self):
+        return "%s" % (self.name)
 
     class Meta:
         db_table = 'contacts_locations'
@@ -196,6 +201,7 @@ class Location(models.Model):
         verbose_name_plural = _('locations')
 
 
+@python_2_unicode_compatible
 class PhoneNumber(models.Model):
     """Phone Number model."""
     content_type = models.ForeignKey(ContentType, limit_choices_to={
@@ -210,8 +216,8 @@ class PhoneNumber(models.Model):
     date_added = models.DateTimeField(_('date added'), auto_now_add=True)
     date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 
-    def __unicode__(self):
-        return u"%s (%s)" % (self.phone_number, self.location)
+    def __str__(self):
+        return "%s (%s)" % (self.phone_number, self.location)
 
     class Meta:
         db_table = 'contacts_phone_numbers'
@@ -219,6 +225,7 @@ class PhoneNumber(models.Model):
         verbose_name_plural = _('phone numbers')
 
 
+@python_2_unicode_compatible
 class EmailAddress(models.Model):
     content_type = models.ForeignKey(ContentType, limit_choices_to={
         'app_label': 'contacts'})
@@ -232,15 +239,16 @@ class EmailAddress(models.Model):
     date_added = models.DateTimeField(_('date added'), auto_now_add=True)
     date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 
-    def __unicode__(self):
-        return u"%s (%s)" % (self.email_address, self.location)
+    def __str__(self):
+        return "%s (%s)" % (self.email_address, self.location)
 
     class Meta:
         db_table = 'contacts_email_addresses'
-        verbose_name = 'email address'
-        verbose_name_plural = 'email addresses'
+        verbose_name = _('email address')
+        verbose_name_plural = _('email addresses')
 
 
+@python_2_unicode_compatible
 class InstantMessenger(models.Model):
     OTHER = 'other'
 
@@ -272,15 +280,16 @@ class InstantMessenger(models.Model):
     date_added = models.DateTimeField(_('date added'), auto_now_add=True)
     date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 
-    def __unicode__(self):
-        return u"%s (%s)" % (self.im_account, self.location)
+    def __str__(self):
+        return "%s (%s)" % (self.im_account, self.location)
 
     class Meta:
         db_table = 'contacts_instant_messengers'
-        verbose_name = 'instant messenger'
-        verbose_name_plural = 'instant messengers'
+        verbose_name = _('instant messenger')
+        verbose_name_plural = _('instant messengers')
 
 
+@python_2_unicode_compatible
 class WebSite(models.Model):
     content_type = models.ForeignKey(ContentType, limit_choices_to={
         'app_label': 'contacts'})
@@ -294,8 +303,8 @@ class WebSite(models.Model):
     date_added = models.DateTimeField(_('date added'), auto_now_add=True)
     date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 
-    def __unicode__(self):
-        return u"%s (%s)" % (self.url, self.location)
+    def __str__(self):
+        return "%s (%s)" % (self.url, self.location)
 
     class Meta:
         db_table = 'contacts_web_sites'
@@ -303,10 +312,11 @@ class WebSite(models.Model):
         verbose_name_plural = _('web sites')
 
     def get_absolute_url(self):
-        return u"%s?web_site=%s" % (self.content_object.get_absolute_url(),
+        return "%s?web_site=%s" % (self.content_object.get_absolute_url(),
                                     self.pk)
 
 
+@python_2_unicode_compatible
 class StreetAddress(models.Model):
     content_type = models.ForeignKey(ContentType, limit_choices_to={
         'app_label': 'contacts'})
@@ -324,8 +334,8 @@ class StreetAddress(models.Model):
     date_added = models.DateTimeField(_('date added'), auto_now_add=True)
     date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 
-    def __unicode__(self):
-        return u"%s (%s)" % (self.city, self.location)
+    def __str__(self):
+        return "%s (%s)" % (self.city, self.location)
 
     class Meta:
         db_table = 'contacts_street_addresses'
@@ -333,6 +343,7 @@ class StreetAddress(models.Model):
         verbose_name_plural = _('street addresses')
 
 
+@python_2_unicode_compatible
 class SpecialDate(models.Model):
     content_type = models.ForeignKey(ContentType, limit_choices_to={
         'app_label': 'contacts'})
@@ -348,8 +359,8 @@ class SpecialDate(models.Model):
 
     objects = SpecialDateManager()
 
-    def __unicode__(self):
-        return u"%s: %s" % (self.occasion, self.date)
+    def __str__(self):
+        return "%s: %s" % (self.occasion, self.date)
 
     class Meta:
         db_table = 'contacts_special_dates'
