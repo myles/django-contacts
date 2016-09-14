@@ -1,10 +1,36 @@
 sudo: false
 language: python
+
 python:
   - "2.7"
   - "3.4"
+  - "3.5"
+  - "pypy"
+  - "pypy3"
+
+env:
+  matrix:
+    - DJANGO=1.8
+    - DJANGO=1.9
+    - DJANGO=1.10
+
 install:
-  - "pip install tox-travis"
-  - "pip install -r requirements.txt"
-  - "pip install -r requirements-tests.txt"
-script: tox
+  - TOX_ENV=py${TRAVIS_PYTHON_VERSION}-django${DJANGO}
+  - pip install tox
+  - tox -e $TOX_ENV --notest
+
+script: tox -e $TOX_ENV
+
+matrix:
+  fast_finish: true
+  include:
+    - python: "3.4"
+      env: TOX_ENV=lint
+      install: pip install tox
+      script: tox -e $TOX_ENV
+    - python: "3.4"
+      env: TOX_ENV=docs
+      install: pip install tox
+      script: tox -e $TOX_ENV
+  allow_failures:
+    - python: pypy3
