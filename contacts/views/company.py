@@ -74,7 +74,7 @@ def create(request, template='contacts/company/create.html'):
     """
 
     user = request.user
-    if not user.has_perm('add_company'):
+    if not user.has_perm('{}.add_company'.format(Company._meta.app_label)):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
@@ -108,7 +108,7 @@ def update(request, pk, slug=None, template='contacts/company/update.html'):
     """
 
     user = request.user
-    if not user.has_perm('change_company'):
+    if not user.has_perm('{}.change_company'.format(Company._meta.app_label)):
         return HttpResponseForbidden()
 
     try:
@@ -166,7 +166,7 @@ def delete(request, pk, slug=None, template='contacts/company/delete.html'):
     """
 
     user = request.user
-    if not user.has_perm('delete_company'):
+    if not user.has_perm('{}.delete_company'.format(Company._meta.app_label)):
         return HttpResponseForbidden()
 
     try:
