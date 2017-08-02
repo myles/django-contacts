@@ -71,7 +71,7 @@ def create(request, template='contacts/group/create.html'):
     """
 
     user = request.user
-    if not user.has_perm('add_group'):
+    if not user.has_perm('{}.add_group'.format(Group._meta.app_label)):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
@@ -102,7 +102,7 @@ def update(request, pk, slug=None, template='contacts/group/update.html'):
     """
 
     user = request.user
-    if not user.has_perm('change_group'):
+    if not user.has_perm('{}.change_group'.format(Group._meta.app_label)):
         return HttpResponseForbidden()
 
     try:
@@ -134,7 +134,7 @@ def delete(request, pk, slug=None, template='contacts/group/delete.html'):
     """
 
     user = request.user
-    if not user.has_perm('delete_group'):
+    if not user.has_perm('{}.delete_group'.format(Group._meta.app_label)):
         return HttpResponseForbidden()
 
     try:

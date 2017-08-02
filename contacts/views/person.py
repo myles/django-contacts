@@ -70,7 +70,7 @@ def create(request, template='contacts/person/create.html'):
     :param template: A custom template.
     """
     user = request.user
-    if not user.has_perm('add_person'):
+    if not user.has_perm('{}.add_person'.format(Person._meta.app_label)):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
@@ -97,7 +97,7 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
     :param template: A custom template.
     """
     user = request.user
-    if not user.has_perm('change_person'):
+    if not user.has_perm('{}.change_person'.format(Person._meta.app_label)):
         return HttpResponseForbidden()
 
     try:
@@ -156,7 +156,7 @@ def delete(request, pk, slug=None, template='contacts/person/delete.html'):
     :param template: A custom template.
     """
     user = request.user
-    if not user.has_perm('delete_person'):
+    if not user.has_perm('{}.delete_person'.format(Person._meta.app_label)):
         return HttpResponseForbidden()
 
     try:
